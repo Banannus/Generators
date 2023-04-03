@@ -1,0 +1,9 @@
+name: Generators
+version: '${project.version}'
+main: dk.banannus.generators.Generators
+api-version: 1.19
+authors: [ Banannus ]
+description: Generators
+commands:
+  gen:
+    description: Command

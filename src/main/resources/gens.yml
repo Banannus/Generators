@@ -1,0 +1,23 @@
+gens:
+  1:
+    block: "CLAY"
+    name: "&7&lCLAY &f&lGENERATOR"
+    drop: "CLAY_BALL"
+    salgspris: 10
+    xp: 0.1
+    upgradepris: 1000
+  2:
+    block: "STAINED_CLAY"
+    name: "&7&lCLAY &f&lGENERATOR"
+    drop: "CLAY_BALL"
+    salgspris: 10
+    xp: 0.1
+    upgradepris: 1000
+  3:
+    block: "STAINED_CLAY:1"
+    name: "&7&lCLAY &f&lGENERATOR"
+    drop: "CLAY_BALL"
+    salgspris: 10
+    xp: 0.1
+    upgradepris: 1000
+
