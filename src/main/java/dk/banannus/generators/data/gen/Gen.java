@@ -1,6 +1,7 @@
-package dk.banannus.generators.Data;
+package dk.banannus.generators.data.gen;
 
 public class Gen {
+	private final String key;
 	private final String block;
 	private final String name;
 	private final String drop;
@@ -8,13 +9,19 @@ public class Gen {
 	private final double xp;
 	private final int upgradepris;
 
-	public Gen(String block, String name, String drop, int salgspris, double xp, int upgradepris) {
+
+	public Gen(String key, String block, String name, String drop, int salgspris, double xp, int upgradepris) {
 		this.block = block;
 		this.name = name;
 		this.drop = drop;
 		this.salgspris = salgspris;
 		this.xp = xp;
 		this.upgradepris = upgradepris;
+		this.key = key;
+	}
+
+	public String getKey() {
+		return key;
 	}
 
 	public String getBlock() {

@@ -1,8 +1,8 @@
 package dk.banannus.generators.commands;
 
-import dk.banannus.generators.Data.Gen;
-import dk.banannus.generators.Data.PlayerData;
+import dk.banannus.generators.data.gen.Gen;
 import dk.banannus.generators.Generators;
+import dk.banannus.generators.data.player.PlayerDataManager;
 import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -10,12 +10,10 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 
-import java.util.Set;
 import java.util.UUID;
 
-import static dk.banannus.generators.Data.GensManager.genValues;
-import static dk.banannus.generators.Data.PlayerData.playerDataValues;
-import static dk.banannus.generators.Data.PlayerData.saveAll;
+import static dk.banannus.generators.data.gen.GensManager.genValues;
+import static dk.banannus.generators.data.player.PlayerData.playerDataValues;
 
 public class Test implements CommandExecutor {
 
@@ -30,7 +28,8 @@ public class Test implements CommandExecutor {
 		UUID uuid = p.getUniqueId();
 
 		if(args[0].equalsIgnoreCase("save")) {
-			saveAll(uuid);
+			PlayerDataManager playerDataManager = new PlayerDataManager();
+			playerDataManager.saveAll(uuid);
 		}
 
 		if(args[0].equalsIgnoreCase("test")) {

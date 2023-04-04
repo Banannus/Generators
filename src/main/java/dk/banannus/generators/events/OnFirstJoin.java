@@ -1,7 +1,7 @@
 package dk.banannus.generators.events;
 
-import dk.banannus.generators.Data.FileManager;
-import dk.banannus.generators.Data.PlayerData;
+import dk.banannus.generators.data.file.FileManager;
+import dk.banannus.generators.data.player.PlayerDataManager;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerJoinEvent;
@@ -17,6 +17,7 @@ public class OnFirstJoin implements Listener {
 		UUID uuid = e.getPlayer().getUniqueId();
 		FileManager fileManager = new FileManager(JavaPlugin.getPlugin(Generators.class));
 		fileManager.createPlayerFile(uuid);
-		PlayerData.loadPlayerData(uuid);
+		PlayerDataManager playerDataManager = new PlayerDataManager();
+		playerDataManager.loadPlayerData(uuid);
 	}
 }

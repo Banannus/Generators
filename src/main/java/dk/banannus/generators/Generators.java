@@ -1,6 +1,7 @@
 package dk.banannus.generators;
 
-import dk.banannus.generators.Data.GensManager;
+import dk.banannus.generators.data.file.ConfigManager;
+import dk.banannus.generators.data.gen.GensManager;
 import dk.banannus.generators.commands.Test;
 import dk.banannus.generators.events.PlayerInteractLeft;
 import dk.banannus.generators.events.BlockPlace;
@@ -15,8 +16,9 @@ import java.io.File;
 public final class Generators extends JavaPlugin {
 
     public static Generators instance;
-    public static Config gens;
-    public static FileConfiguration gensYML;
+    public static Config gens, config;
+    public static FileConfiguration gensYML, configYML;
+    public static ConfigManager configManager;
 
 
     @Override
@@ -45,12 +47,19 @@ public final class Generators extends JavaPlugin {
         gens = new Config(this, null, "gens.yml");
         gensYML = gens.getConfig();
 
-        // Player folder
+        // Config
 
+        if (!(new File(this.getDataFolder(), "config.yml")).exists()) {
+            this.saveResource("config.yml", false);
+        }
 
+        config = new Config(this, null, "config.yml");
+        configYML = config.getConfig();
 
-        // Load gens
+        // Load Stuff
+        configManager = new ConfigManager();
 
+        configManager.loadALl();
         GensManager.loadGens();
     }
 

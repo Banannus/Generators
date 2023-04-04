@@ -1,7 +1,6 @@
-package dk.banannus.generators.Data;
+package dk.banannus.generators.data.file;
 
 import dk.banannus.generators.Generators;
-import org.bukkit.configuration.file.YamlConfiguration;
 
 import java.io.File;
 import java.io.IOException;
@@ -15,6 +14,7 @@ public class FileManager {
 		this.plugin = plugin;
 	}
 
+	@SuppressWarnings("ResultOfMethodCallIgnored")
 	public void createPlayerFile(UUID uuid) {
 		File playersFolder = new File(plugin.getDataFolder(), "players");
 		if (!playersFolder.exists()) {
@@ -33,6 +33,7 @@ public class FileManager {
 		}
 	}
 
+	@SuppressWarnings("ResultOfMethodCallIgnored")
 	public File getPlayerFile(UUID uuid) {
 		File playersFolder = new File(plugin.getDataFolder(), "players");
 		if (!playersFolder.exists()) {
@@ -41,6 +42,7 @@ public class FileManager {
 		return new File(playersFolder, uuid + ".yml");
 	}
 
+	@SuppressWarnings("ResultOfMethodCallIgnored")
 	public void deleteFile(UUID uuid) {
 		FileManager fileManager = new FileManager(Generators.instance);
 		File file = fileManager.getPlayerFile(uuid);
@@ -55,5 +57,4 @@ public class FileManager {
 			e.printStackTrace();
 		}
 	}
-
 }

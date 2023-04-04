@@ -1,11 +1,13 @@
-package dk.banannus.generators.Data;
+package dk.banannus.generators.data.gen;
 
 import dk.banannus.generators.Generators;
 import org.bukkit.Material;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.inventory.ItemStack;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public class GensManager {
@@ -15,20 +17,11 @@ public class GensManager {
 		genValues.put(key, data);
 	}
 
-	public static HashMap<String, Gen> getGenList() {
-		return genValues;
-	}
-
-	public Gen getGen(String key) {
-		return genValues.get(key);
-	}
-
 	public static HashMap<ItemStack, String> getGenBlocks() {
-		ConfigurationSection gensSection = Generators.gensYML.getConfigurationSection("gens");
-
 		HashMap<ItemStack, String> materials = new HashMap<>();
-		for(String key : gensSection.getKeys(false)) {
-			String block = gensSection.getString(key + ".block");
+		for(Gen gen : genValues.values()) {
+			String block = gen.getBlock();
+			String key = gen.getKey();
 			if(!block.contains(":")) {
 				ItemStack item = new ItemStack(Material.valueOf(block));
 				materials.put(item, key);
@@ -41,6 +34,15 @@ public class GensManager {
 		return materials;
 	}
 
+	public static List<String> getGenNames() {
+
+		List<String> names = new ArrayList<>();
+		for(Gen gen : genValues.values()) {
+			String name = gen.getName();
+			names.add(name);
+		}
+		return names;
+	}
 
 	public static void loadGens() {
 		ConfigurationSection gensSection = Generators.gensYML.getConfigurationSection("gens");
@@ -55,7 +57,7 @@ public class GensManager {
 			double xp = section.getDouble("xp");
 			int upgradepris = section.getInt("upgradepris");
 
-			Gen data = new Gen(block, name, drop, salgspris, xp, upgradepris);
+			Gen data = new Gen(number, block, name, drop, salgspris, xp, upgradepris);
 			addGen(number, data);
 		}
 	}
@@ -63,6 +65,15 @@ public class GensManager {
 	public static String getKeyFromBlock(String block) {
 		for (Map.Entry<String, Gen> entry : genValues.entrySet()) {
 			if (entry.getValue().getBlock().equals(block)) {
+				return entry.getKey();
+			}
+		}
+		return null;
+	}
+
+	public static String getKeyFromName(String name) {
+		for (Map.Entry<String, Gen> entry : genValues.entrySet()) {
+			if (entry.getValue().getBlock().equals(name)) {
 				return entry.getKey();
 			}
 		}

@@ -1,6 +1,6 @@
 package dk.banannus.generators.events;
 
-import dk.banannus.generators.Data.PlayerData;
+import dk.banannus.generators.data.player.PlayerDataManager;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerQuitEvent;
@@ -12,6 +12,6 @@ public class OnLeave implements Listener {
 	@EventHandler
 	public void onLeave(PlayerQuitEvent e) {
 		UUID uuid = e.getPlayer().getUniqueId();
-		PlayerData.unloadPlayerData(uuid);
+		PlayerDataManager.unloadPlayerData(uuid);
 	}
 }
