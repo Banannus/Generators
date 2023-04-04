@@ -1,6 +1,6 @@
-package dk.banannus.generators.GenData;
+package dk.banannus.generators.Data;
 
-public class GetGenValue {
+public class Gen {
 	private final String block;
 	private final String name;
 	private final String drop;
@@ -8,7 +8,7 @@ public class GetGenValue {
 	private final double xp;
 	private final int upgradepris;
 
-	public GetGenValue(String block, String name, String drop, int salgspris, double xp, int upgradepris) {
+	public Gen(String block, String name, String drop, int salgspris, double xp, int upgradepris) {
 		this.block = block;
 		this.name = name;
 		this.drop = drop;
