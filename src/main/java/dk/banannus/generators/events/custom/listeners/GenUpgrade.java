@@ -13,9 +13,15 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
 import org.bukkit.inventory.ItemStack;
 
+import java.text.DecimalFormat;
+import java.text.DecimalFormatSymbols;
+import java.text.NumberFormat;
 import java.util.HashMap;
+import java.util.Locale;
 import java.util.Set;
 import java.util.UUID;
+
+import static dk.banannus.generators.Generators.econ;
 
 public class GenUpgrade implements Listener {
 
@@ -46,8 +52,6 @@ public class GenUpgrade implements Listener {
 				return;
 			}
 
-
-
 			Location blockLoc = e.getClickedBlock().getLocation();
 			UUID uuid = e.getPlayer().getUniqueId();
 
@@ -64,21 +68,29 @@ public class GenUpgrade implements Listener {
 				return;
 			}
 
-			int keyInt = Integer.parseInt(key) + 1;
-			String nextKey = String.valueOf(keyInt);
+			if(econ.getBalance(player) >= GensManager.getGenList().get(key).getUpgradepris()) {
+				int keyInt = Integer.parseInt(key) + 1;
+				String nextKey = String.valueOf(keyInt);
 
-			playerDataManager.removeGen(blockLoc, uuid);
-			playerDataManager.saveGen(nextKey, blockLoc, uuid);
+				econ.withdrawPlayer(player, GensManager.getGenList().get(key).getUpgradepris());
 
-			HashMap<String, ItemStack> materials = GensManager.ReverseGenBlocksList();
-			ItemStack itemStack = materials.get(nextKey);
+				playerDataManager.removeGen(blockLoc, uuid);
+				playerDataManager.saveGen(nextKey, blockLoc, uuid);
 
-			e.getClickedBlock().setType(itemStack.getType());
-			e.getClickedBlock().setData(itemStack.getData().getData());
+				HashMap<String, ItemStack> materials = GensManager.ReverseGenBlocksList();
+				ItemStack itemStack = materials.get(nextKey);
 
+				e.getClickedBlock().setType(itemStack.getType());
+				e.getClickedBlock().setData(itemStack.getData().getData());
+
+			} else {
+				int difference = (int) (GensManager.getGenList().get(key).getUpgradepris() - econ.getBalance(player));
+				NumberFormat formatter = new DecimalFormat("#,###", new DecimalFormatSymbols(Locale.GERMANY));
+				String money_format = formatter.format(difference);
+				ConfigManager.send(player, "messages.no-money", "%money%", money_format);
+			}
 		}
 	}
-
 
 	private boolean maxGens(int checkKey) {
 		Set<String> allKeys = GensManager.getGenList().keySet();

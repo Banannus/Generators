@@ -15,7 +15,7 @@ public class SellChest {
 		this.item = item;
 	}
 
-	public String getSellChest() {
+	public String getLoot() {
 		return sellchest;
 	}
 
@@ -26,5 +26,4 @@ public class SellChest {
 	public ItemStack getItem() {
 		return item;
 	}
-
 }

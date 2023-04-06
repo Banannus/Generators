@@ -5,7 +5,10 @@ import dk.banannus.generators.data.gen.GensManager;
 import dk.banannus.generators.commands.Test;
 import dk.banannus.generators.events.*;
 import dk.banannus.generators.utils.Config;
+import net.milkbowl.vault.economy.Economy;
+import org.bukkit.Bukkit;
 import org.bukkit.configuration.file.FileConfiguration;
+import org.bukkit.plugin.RegisteredServiceProvider;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import java.io.File;
@@ -16,6 +19,7 @@ public final class Generators extends JavaPlugin {
     public static Config gens, config;
     public static FileConfiguration gensYML, configYML;
     public static ConfigManager configManager;
+    public static Economy econ = null;
 
 
     @Override
@@ -49,6 +53,16 @@ public final class Generators extends JavaPlugin {
         config = new Config(this, null, "config.yml");
         configYML = config.getConfig();
 
+        //VAULT // ECON
+        if (!setupEconomy() ) {
+            Bukkit.getLogger().severe(String.format("[%s] - Disabled due to no Vault dependency found!", getDescription().getName()));
+            Bukkit.getLogger().severe(String.format(String.valueOf(getServer().getPluginManager().getPlugin("Vault"))));
+            getServer().getPluginManager().disablePlugin(this);
+            return;
+        }
+        setupEconomy();
+
+
         // Load Stuff
         configManager = new ConfigManager();
 
@@ -61,5 +75,17 @@ public final class Generators extends JavaPlugin {
     public void onDisable() {
 
 
+    }
+
+    private boolean setupEconomy() {
+        if (getServer().getPluginManager().getPlugin("Vault") == null) {
+            return false;
+        }
+        RegisteredServiceProvider<Economy> rsp = getServer().getServicesManager().getRegistration(Economy.class);
+        if (rsp == null) {
+            return false;
+        }
+        econ = rsp.getProvider();
+        return econ != null;
     }
 }

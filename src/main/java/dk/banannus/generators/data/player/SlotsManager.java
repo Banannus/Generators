@@ -1,7 +1,6 @@
-package dk.banannus.generators.data.player.slots;
+package dk.banannus.generators.data.player;
 
 import dk.banannus.generators.data.file.ConfigManager;
-import dk.banannus.generators.data.gen.GensManager;
 
 import java.util.HashMap;
 import java.util.UUID;

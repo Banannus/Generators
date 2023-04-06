@@ -4,7 +4,6 @@ import dk.banannus.generators.Generators;
 import dk.banannus.generators.data.file.FileManager;
 import dk.banannus.generators.data.gen.Gen;
 import dk.banannus.generators.data.gen.GensManager;
-import dk.banannus.generators.data.player.slots.SlotsManager;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.configuration.ConfigurationSection;

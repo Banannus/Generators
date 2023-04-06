@@ -2,7 +2,6 @@ package dk.banannus.generators.data.player;
 
 import dk.banannus.generators.Generators;
 import dk.banannus.generators.data.file.FileManager;
-import dk.banannus.generators.data.player.slots.SlotsManager;
 import org.bukkit.Location;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.YamlConfiguration;
@@ -75,7 +74,7 @@ public class PlayerData {
 		blockData.set("block", getBlock());
 		blockData.set("name", getName());
 		 */
-		
+
 		try {
 			config.save(file);
 		} catch (IOException e) {

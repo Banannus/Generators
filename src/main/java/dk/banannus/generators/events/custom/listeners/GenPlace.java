@@ -3,11 +3,9 @@ package dk.banannus.generators.events.custom.listeners;
 import dk.banannus.generators.data.file.ConfigManager;
 import dk.banannus.generators.data.gen.GensManager;
 import dk.banannus.generators.data.player.PlayerDataManager;
-import dk.banannus.generators.data.player.slots.SlotsManager;
+import dk.banannus.generators.data.player.SlotsManager;
 import dk.banannus.generators.events.custom.events.GenPlaceEvent;
 import dk.banannus.generators.utils.Chat;
-import dk.banannus.generators.utils.Config;
-import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -33,8 +31,6 @@ public class GenPlace implements Listener {
 		}
 
 		UUID uuid = e.getPlayer().getUniqueId();
-
-		Bukkit.broadcastMessage(String.valueOf(PlayerDataManager.getAmountOfPlacedGens(uuid)));
 
 		if(PlayerDataManager.getAmountOfPlacedGens(uuid) >= SlotsManager.getSlots(uuid)) {
 			e.setCancelled(true);

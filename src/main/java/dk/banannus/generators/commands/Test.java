@@ -5,7 +5,7 @@ import dk.banannus.generators.Generators;
 import dk.banannus.generators.data.gen.GensManager;
 import dk.banannus.generators.data.player.PlayerData;
 import dk.banannus.generators.data.player.PlayerDataManager;
-import dk.banannus.generators.data.player.slots.SlotsManager;
+import dk.banannus.generators.data.player.SlotsManager;
 import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -43,7 +43,7 @@ public class Test implements CommandExecutor {
 		HashMap<UUID, Set<PlayerData>> all = PlayerDataManager.getAllPlayerDataList();
 
 		if(args[0].equalsIgnoreCase("online")) {
-			Bukkit.broadcastMessage(String.valueOf(GensManager.getGenBlockList()));
+			Bukkit.broadcastMessage(String.valueOf(online));
 		}
 
 		if(args[0].equalsIgnoreCase("offline")) {
