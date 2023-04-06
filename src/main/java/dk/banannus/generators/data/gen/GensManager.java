@@ -12,13 +12,21 @@ import java.util.Map;
 
 public class GensManager {
 
-	public static HashMap<String, Gen> genValues = new HashMap<>();
+	private static final HashMap<String, Gen> genValues = new HashMap<>();
+	private static final HashMap<ItemStack, String> materials = new HashMap<>();
 	public static void addGen(String key, Gen data) {
 		genValues.put(key, data);
 	}
 
-	public static HashMap<ItemStack, String> getGenBlocks() {
-		HashMap<ItemStack, String> materials = new HashMap<>();
+	public static HashMap<String, Gen> getGenList() {
+		return genValues;
+	}
+
+	public static HashMap<ItemStack, String> getGenBlockList() {
+		return materials;
+	}
+
+	public static void loadGenBlocks() {
 		for(Gen gen : genValues.values()) {
 			String block = gen.getBlock();
 			String key = gen.getKey();
@@ -31,7 +39,16 @@ public class GensManager {
 				materials.put(item, key);
 			}
 		}
-		return materials;
+	}
+
+	public static HashMap<String, ItemStack> ReverseGenBlocksList() {
+		HashMap<String, ItemStack> reverseMaterials = new HashMap<>();
+
+		for (ItemStack item : materials.keySet()) {
+			String key = materials.get(item);
+			reverseMaterials.put(key, item);
+		}
+		return reverseMaterials;
 	}
 
 	public static List<String> getGenNames() {
@@ -78,5 +95,9 @@ public class GensManager {
 			}
 		}
 		return null;
+	}
+
+	public static boolean isGenNotBlock(Material clickedBlock) {
+		return !GensManager.getGenBlockList().containsKey(new ItemStack(clickedBlock));
 	}
 }

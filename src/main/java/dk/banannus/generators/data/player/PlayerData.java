@@ -2,7 +2,7 @@ package dk.banannus.generators.data.player;
 
 import dk.banannus.generators.Generators;
 import dk.banannus.generators.data.file.FileManager;
-import org.bukkit.Bukkit;
+import dk.banannus.generators.data.player.slots.SlotsManager;
 import org.bukkit.Location;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.YamlConfiguration;
@@ -16,9 +16,6 @@ public class PlayerData {
 	private final String key;
 	private final Location location;
 	private final String block;
-
-	public static HashMap<UUID, Set<PlayerData>> playerDataValues = new HashMap<>();
-
 	private final String name;
 
 	public PlayerData(String key, Location location, String block, String name) {
@@ -52,6 +49,7 @@ public class PlayerData {
 
 		int maxIndex = 0;
 		ConfigurationSection gensSection = config.getConfigurationSection("gens");
+		config.set("slots", SlotsManager.getSlots(uuid));
 		if (gensSection != null) {
 			for (String key : gensSection.getKeys(false)) {
 				int index = Integer.parseInt(key);
@@ -60,6 +58,7 @@ public class PlayerData {
 				}
 			}
 		}
+
 		String newIndex = String.valueOf(maxIndex + 1);
 
 		ConfigurationSection blockData = config.getConfigurationSection("gens." + newIndex);
@@ -71,9 +70,12 @@ public class PlayerData {
 		blockData.set("location.x", getLocation().getX());
 		blockData.set("location.y", getLocation().getY());
 		blockData.set("location.z", getLocation().getZ());
+
+		/*
 		blockData.set("block", getBlock());
 		blockData.set("name", getName());
-
+		 */
+		
 		try {
 			config.save(file);
 		} catch (IOException e) {

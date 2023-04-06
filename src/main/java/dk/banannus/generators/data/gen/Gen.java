@@ -1,5 +1,7 @@
 package dk.banannus.generators.data.gen;
 
+import java.util.HashMap;
+
 public class Gen {
 	private final String key;
 	private final String block;

@@ -1,6 +1,7 @@
 package dk.banannus.generators.data.file;
 
 import dk.banannus.generators.Generators;
+import org.bukkit.configuration.file.YamlConfiguration;
 
 import java.io.File;
 import java.io.IOException;
@@ -27,6 +28,9 @@ public class FileManager {
 			try {
 				playerFile.createNewFile();
 				plugin.getLogger().info("Oprettede fil for: " + uuid);
+				YamlConfiguration playerYaml = YamlConfiguration.loadConfiguration(playerFile);
+				playerYaml.set("slots", Integer.valueOf(ConfigManager.get("numbers.start-gens")[0]));
+				playerYaml.save(playerFile);
 			} catch (IOException IO) {
 				IO.printStackTrace();
 			}
@@ -53,6 +57,9 @@ public class FileManager {
 
 		try {
 			file.createNewFile();
+			YamlConfiguration playerYaml = YamlConfiguration.loadConfiguration(file);
+			playerYaml.set("slots", Integer.valueOf(ConfigManager.get("numbers.start-gens")[0]));
+			playerYaml.save(file);
 		} catch (IOException e) {
 			e.printStackTrace();
 		}

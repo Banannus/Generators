@@ -2,7 +2,7 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/generators.iml" filepath="$PROJECT_DIR$/generators.iml" />
+      <module fileurl="file://$PROJECT_DIR$/Generators.iml" filepath="$PROJECT_DIR$/Generators.iml" />
     </modules>
   </component>
 </project>

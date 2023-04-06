@@ -3,10 +3,7 @@ package dk.banannus.generators;
 import dk.banannus.generators.data.file.ConfigManager;
 import dk.banannus.generators.data.gen.GensManager;
 import dk.banannus.generators.commands.Test;
-import dk.banannus.generators.events.PlayerInteractLeft;
-import dk.banannus.generators.events.BlockPlace;
-import dk.banannus.generators.events.OnFirstJoin;
-import dk.banannus.generators.events.OnLeave;
+import dk.banannus.generators.events.*;
 import dk.banannus.generators.utils.Config;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -32,11 +29,7 @@ public final class Generators extends JavaPlugin {
 
         // Listeners
 
-
-        getServer().getPluginManager().registerEvents(new BlockPlace(), this);
-        getServer().getPluginManager().registerEvents(new PlayerInteractLeft(), this);
-        getServer().getPluginManager().registerEvents(new OnFirstJoin(), this);
-        getServer().getPluginManager().registerEvents(new OnLeave(), this);
+        ImplementEvents.initialise(this);
 
         // Gens config
 
@@ -61,6 +54,7 @@ public final class Generators extends JavaPlugin {
 
         configManager.loadALl();
         GensManager.loadGens();
+        GensManager.loadGenBlocks();
     }
 
     @Override

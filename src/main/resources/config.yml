@@ -1,3 +1,13 @@
 messages:
   place-gen: "&a[!] Du placerede en generator!"
   remove-gen: "&c[!] Du fjernede en generator!"
+  remove-others-gens: "&c[!] Du kan ikke fjerne andres generators!"
+  remove-gen-block: "&c✘ Du kan ikke smadre generators!"
+  max-upgrade: "&c✘ Du har opgraderet dine gens til max niveau!"
+  max-gens: "&c✘ Du har ikke plads til flere generators!"
+
+numbers:
+  start-gens: 20
+
+
+

@@ -3,28 +3,48 @@ package dk.banannus.generators.data.player;
 import dk.banannus.generators.Generators;
 import dk.banannus.generators.data.file.FileManager;
 import dk.banannus.generators.data.gen.Gen;
+import dk.banannus.generators.data.gen.GensManager;
+import dk.banannus.generators.data.player.slots.SlotsManager;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.YamlConfiguration;
 
 import java.io.File;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Set;
-import java.util.UUID;
+import java.util.*;
 
-import static dk.banannus.generators.data.gen.GensManager.genValues;
-import static dk.banannus.generators.data.player.PlayerData.playerDataValues;
 
 public class PlayerDataManager {
 
-	public  HashMap<Location, String> getAllLocations(UUID uuid) {
+	private static HashMap<UUID, Set<PlayerData>> onlinePlayerData = new HashMap<>();
+
+	private static HashMap<UUID, Set<PlayerData>> offlinePlayerData = new HashMap<>();
+
+	private static HashMap<UUID, Set<PlayerData>> allPlayerData = new HashMap<>();
+
+	public static HashMap<UUID, Set<PlayerData>> getOnlinePlayerDataList() {
+		return onlinePlayerData;
+	}
+
+	public static HashMap<UUID, Set<PlayerData>> getOfflinePlayerDataList() {
+		return offlinePlayerData;
+	}
+
+	public static HashMap<UUID, Set<PlayerData>> getAllPlayerDataList() {
+		return allPlayerData;
+	}
+
+
+	public HashMap<Location, String> getAllPlayerLocations (UUID uuid) {
 		HashMap<Location, String> allLocations = new HashMap<>();
 
-		Set<PlayerData> playerDataManager = playerDataValues.get(uuid);
+		if(!allPlayerData.containsKey(uuid)) {
+			return null;
+		}
 
-		for(PlayerData index : playerDataManager) {
+		Set<PlayerData> playerData = allPlayerData.get(uuid);
+
+		for(PlayerData index : playerData) {
 			Location genLoc = index.getLocation();
 			String key = index.getKey();
 			allLocations.put(genLoc, key);
@@ -32,34 +52,57 @@ public class PlayerDataManager {
 		return allLocations;
 	}
 
+	public List<Location> getAllLocations() {
+
+		List<Location> allLocations = new ArrayList<>();
+
+		for (UUID uuid : allPlayerData.keySet()) {
+			Set<PlayerData> playerData = allPlayerData.get(uuid);
+			for (PlayerData data : playerData) {
+				Location location = data.getLocation();
+				allLocations.add(location);
+			}
+		}
+		return allLocations;
+	}
+
 	public void saveGen(String key, Location location, UUID uuid) {
+		HashMap<String, Gen> genValues = GensManager.getGenList();
 		Gen genValue = genValues.get(key);
 		String block = genValue.getBlock();
 		String name = genValue.getName();
 
 		PlayerData playerDataManager = new PlayerData(key, location, block, name);
 
-		Set<PlayerData> playerDataManagerSet = playerDataValues.getOrDefault(uuid, new HashSet<>());
+		Set<PlayerData> playerDataManagerSet = onlinePlayerData.getOrDefault(uuid, new HashSet<>());
 		playerDataManagerSet.add(playerDataManager);
-		playerDataValues.put(uuid, playerDataManagerSet);
+		onlinePlayerData.put(uuid, playerDataManagerSet);
+		allPlayerData.put(uuid, playerDataManagerSet);
 	}
 
 	public void removeGen(Location location, UUID uuid) {
-		if(!playerDataValues.get(uuid).isEmpty()) {
-			playerDataValues.computeIfPresent(uuid, (key, value) -> {
+		if(!onlinePlayerData.get(uuid).isEmpty()) {
+			onlinePlayerData.computeIfPresent(uuid, (key, value) -> {
 				value.removeIf(playerData -> playerData.getLocation().equals(location));
 				return value;
 			});
-			if(playerDataValues.get(uuid).isEmpty()) {
-				unloadPlayerData(uuid);
+			allPlayerData.computeIfPresent(uuid, (key, value) -> {
+				value.removeIf(playerData -> playerData.getLocation().equals(location));
+				return value;
+			});
+			if(onlinePlayerData.get(uuid).isEmpty()) {
+				unloadPlayerData(uuid, false);
+			}
+			if(allPlayerData.get(uuid).isEmpty()) {
+				allPlayerData.remove(uuid);
 			}
 		} else {
-			unloadPlayerData(uuid);
+			unloadPlayerData(uuid, false);
 		}
 	}
 
 	public void saveAll(UUID uuid) {
-		Set<PlayerData> playerDataManager = playerDataValues.get(uuid);
+		Set<PlayerData> playerDataManager = onlinePlayerData.get(uuid);
 		FileManager fileManager = new FileManager(Generators.instance);
 		if (playerDataManager == null) {
 			fileManager.deleteFile(uuid);
@@ -94,11 +137,27 @@ public class PlayerDataManager {
 			PlayerData playerDataManager = new PlayerData(genKey, location, block, name);
 			playerDataManagerHashSet.add(playerDataManager);
 		}
-		playerDataValues.put(uuid, playerDataManagerHashSet);
+
+		offlinePlayerData.remove(uuid);
+		onlinePlayerData.put(uuid, playerDataManagerHashSet);
+		allPlayerData.put(uuid, playerDataManagerHashSet);
 	}
 
-	public static void unloadPlayerData(UUID uuid) {
-		playerDataValues.remove(uuid);
+	public static void unloadPlayerData(UUID uuid, boolean all) {
+		if(all) {
+			offlinePlayerData.put(uuid, onlinePlayerData.get(uuid));
+			allPlayerData.put(uuid, onlinePlayerData.get(uuid));
+		}
+		onlinePlayerData.remove(uuid);
 	}
 
+	public static int getAmountOfPlacedGens(UUID uuid) {
+
+		Set<PlayerData> playerDataList = PlayerDataManager.getOnlinePlayerDataList().get(uuid);
+		if (playerDataList != null) {
+			return playerDataList.size();
+		} else {
+			return 0;
+		}
+	}
 }
