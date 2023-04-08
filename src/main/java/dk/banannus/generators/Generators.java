@@ -1,6 +1,7 @@
 package dk.banannus.generators;
 
 import dk.banannus.generators.data.file.ConfigManager;
+import dk.banannus.generators.data.file.LoadPlayerFiles;
 import dk.banannus.generators.data.gen.GensManager;
 import dk.banannus.generators.commands.Test;
 import dk.banannus.generators.events.*;
@@ -20,6 +21,7 @@ public final class Generators extends JavaPlugin {
     public static FileConfiguration gensYML, configYML;
     public static ConfigManager configManager;
     public static Economy econ = null;
+    public static LoadPlayerFiles loadPlayerFiles;
 
 
     @Override
@@ -53,6 +55,10 @@ public final class Generators extends JavaPlugin {
         config = new Config(this, null, "config.yml");
         configYML = config.getConfig();
 
+        // Sellchest locations
+
+
+
         //VAULT // ECON
         if (!setupEconomy() ) {
             Bukkit.getLogger().severe(String.format("[%s] - Disabled due to no Vault dependency found!", getDescription().getName()));
@@ -65,6 +71,9 @@ public final class Generators extends JavaPlugin {
 
         // Load Stuff
         configManager = new ConfigManager();
+        loadPlayerFiles = new LoadPlayerFiles();
+
+        loadPlayerFiles.loadPlayerFilesAsync(this);
 
         configManager.loadALl();
         GensManager.loadGens();

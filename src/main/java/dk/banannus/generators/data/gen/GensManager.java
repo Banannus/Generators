@@ -79,24 +79,6 @@ public class GensManager {
 		}
 	}
 
-	public static String getKeyFromBlock(String block) {
-		for (Map.Entry<String, Gen> entry : genValues.entrySet()) {
-			if (entry.getValue().getBlock().equals(block)) {
-				return entry.getKey();
-			}
-		}
-		return null;
-	}
-
-	public static String getKeyFromName(String name) {
-		for (Map.Entry<String, Gen> entry : genValues.entrySet()) {
-			if (entry.getValue().getBlock().equals(name)) {
-				return entry.getKey();
-			}
-		}
-		return null;
-	}
-
 	public static boolean isGenNotBlock(Material clickedBlock) {
 		return !GensManager.getGenBlockList().containsKey(new ItemStack(clickedBlock));
 	}

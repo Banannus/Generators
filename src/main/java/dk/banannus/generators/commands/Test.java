@@ -5,7 +5,8 @@ import dk.banannus.generators.Generators;
 import dk.banannus.generators.data.gen.GensManager;
 import dk.banannus.generators.data.player.PlayerData;
 import dk.banannus.generators.data.player.PlayerDataManager;
-import dk.banannus.generators.data.player.SlotsManager;
+import dk.banannus.generators.data.sellchest.SellChestItem;
+import dk.banannus.generators.data.sellchest.SellChestManager;
 import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -23,17 +24,17 @@ public class Test implements CommandExecutor {
 	private final Generators plugin = Generators.instance;
 
 	@Override
-	public boolean onCommand(@NotNull CommandSender commandSender, @NotNull Command command, @NotNull String s, @NotNull String[] args) {
+	public boolean onCommand(@NotNull CommandSender sender, @NotNull Command command, @NotNull String s, @NotNull String[] args) {
 
 
 		HashMap<String, Gen> genValues = GensManager.getGenList();
 
 		Gen test = genValues.get("2");
 
-		Player p = (Player) commandSender;
+		Player p = (Player) sender;
 		UUID uuid = p.getUniqueId();
 
-		if(args[0].equalsIgnoreCase("save")) {
+		if (args[0].equalsIgnoreCase("save")) {
 			PlayerDataManager playerDataManager = new PlayerDataManager();
 			playerDataManager.saveAll(uuid);
 		}
@@ -42,25 +43,42 @@ public class Test implements CommandExecutor {
 		HashMap<UUID, Set<PlayerData>> offline = PlayerDataManager.getOfflinePlayerDataList();
 		HashMap<UUID, Set<PlayerData>> all = PlayerDataManager.getAllPlayerDataList();
 
-		if(args[0].equalsIgnoreCase("online")) {
+		if (args[0].equalsIgnoreCase("online")) {
 			Bukkit.broadcastMessage(String.valueOf(online));
 		}
 
-		if(args[0].equalsIgnoreCase("offline")) {
+		if (args[0].equalsIgnoreCase("offline")) {
 			Bukkit.broadcastMessage(String.valueOf(offline));
 		}
 
-		if(args[0].equalsIgnoreCase("all")) {
+		if (args[0].equalsIgnoreCase("all")) {
 			Bukkit.broadcastMessage(String.valueOf(all));
 		}
 
-		if(args[0].equalsIgnoreCase("slots")) {
-			Bukkit.broadcastMessage(String.valueOf(SlotsManager.getSlots(uuid)));
-			Bukkit.broadcastMessage(String.valueOf(SlotsManager.getSlotsList()));
-			if(args[1].equalsIgnoreCase("add")) {
-				SlotsManager.addSlots(uuid, 10);
-			}
+		if (args.length < 2) {
+			sender.sendMessage("Usage: /gen item <start|stop> <player>");
+			return true;
 		}
-		return false;
+
+		if (args[0].equalsIgnoreCase("item")) {
+			SellChestManager sellChestManager = new SellChestManager();
+
+			if (args[1].equalsIgnoreCase("stop")) {
+				sellChestManager.cancelGenDrops(uuid);
+				sender.sendMessage("Stopped generating items for player " + uuid);
+			} else if (args[1].equalsIgnoreCase("start")) {
+				sellChestManager.startGenDrops(uuid);
+				sender.sendMessage("Started generating items for player " + uuid);
+			} else if (args[1].equalsIgnoreCase("list")) {
+				sender.sendMessage("SellChestLoc: " + SellChestManager.getSellChestPlayerLocationList().get(uuid));
+			} else if (args[1].equalsIgnoreCase("save")) {
+				Bukkit.broadcastMessage("Saved");
+			}
+		} else {
+			sender.sendMessage("Invalid argument '" + args[1] + "'. Usage: /gen item <start|stop> <player>");
+		}
+
+		return true;
+
 	}
 }

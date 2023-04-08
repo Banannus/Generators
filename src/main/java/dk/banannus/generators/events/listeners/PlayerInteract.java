@@ -8,7 +8,7 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerInteractEvent;
 
 
-public class PlayerInteractLeft implements Listener {
+public class PlayerInteract implements Listener {
 
 
 	@EventHandler

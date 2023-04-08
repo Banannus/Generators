@@ -46,9 +46,11 @@ public class PlayerData {
 
 		YamlConfiguration config = YamlConfiguration.loadConfiguration(file);
 
-		int maxIndex = 0;
-		ConfigurationSection gensSection = config.getConfigurationSection("gens");
 		config.set("slots", SlotsManager.getSlots(uuid));
+
+		ConfigurationSection gensSection = config.getConfigurationSection("gens");
+
+		int maxIndex = 0;
 		if (gensSection != null) {
 			for (String key : gensSection.getKeys(false)) {
 				int index = Integer.parseInt(key);
@@ -69,11 +71,6 @@ public class PlayerData {
 		blockData.set("location.x", getLocation().getX());
 		blockData.set("location.y", getLocation().getY());
 		blockData.set("location.z", getLocation().getZ());
-
-		/*
-		blockData.set("block", getBlock());
-		blockData.set("name", getName());
-		 */
 
 		try {
 			config.save(file);

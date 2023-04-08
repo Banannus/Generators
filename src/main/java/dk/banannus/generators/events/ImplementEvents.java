@@ -13,7 +13,7 @@ public class ImplementEvents {
 		// Normale
 
 		getServer().getPluginManager().registerEvents(new BlockPlace(), plugin);
-		getServer().getPluginManager().registerEvents(new PlayerInteractLeft(), plugin);
+		getServer().getPluginManager().registerEvents(new PlayerInteract(), plugin);
 		getServer().getPluginManager().registerEvents(new Join(), plugin);
 		getServer().getPluginManager().registerEvents(new Leave(), plugin);
 		getServer().getPluginManager().registerEvents(new BlockBreak(), plugin);
@@ -23,5 +23,6 @@ public class ImplementEvents {
 		getServer().getPluginManager().registerEvents(new GenPlace(), plugin);
 		getServer().getPluginManager().registerEvents(new GenRemove(), plugin);
 		getServer().getPluginManager().registerEvents(new GenUpgrade(), plugin);
+		getServer().getPluginManager().registerEvents(new SellChestPlace(), plugin);
 	}
 }

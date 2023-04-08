@@ -10,5 +10,7 @@ messages:
 numbers:
   start-gens: 20
 
+sell-chest:
+  name: "&3&lSELL &f&lCHEST"
 
 
