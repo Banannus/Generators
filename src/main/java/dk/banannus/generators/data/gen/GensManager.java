@@ -61,6 +61,17 @@ public class GensManager {
 		return names;
 	}
 
+	public static ItemStack getDrop(String key) {
+		Gen gen = GensManager.getGenList().get(key);
+		String drop = gen.getDrop();
+		if (!drop.contains(":")) {
+			return new ItemStack(Material.valueOf(drop));
+		} else {
+			String[] parts = drop.split(":");
+			return new ItemStack(Material.valueOf(parts[0]), 1, (short) Integer.parseInt(parts[1]));
+		}
+	}
+
 	public static void loadGens() {
 		ConfigurationSection gensSection = Generators.gensYML.getConfigurationSection("gens");
 
@@ -70,11 +81,12 @@ public class GensManager {
 			String block = section.getString("block");
 			String name = section.getString("name");
 			String drop = section.getString("drop");
+			String dropName = section.getString("dropName");
 			int salgspris = section.getInt("salgspris");
 			double xp = section.getDouble("xp");
 			int upgradepris = section.getInt("upgradepris");
 
-			Gen data = new Gen(number, block, name, drop, salgspris, xp, upgradepris);
+			Gen data = new Gen(number, block, name, drop, dropName, salgspris, xp, upgradepris);
 			addGen(number, data);
 		}
 	}

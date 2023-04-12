@@ -24,5 +24,7 @@ public class ImplementEvents {
 		getServer().getPluginManager().registerEvents(new GenRemove(), plugin);
 		getServer().getPluginManager().registerEvents(new GenUpgrade(), plugin);
 		getServer().getPluginManager().registerEvents(new SellChestPlace(), plugin);
+		getServer().getPluginManager().registerEvents(new SellChestOpen(), plugin);
+		getServer().getPluginManager().registerEvents(new SellStickSell(), plugin);
 	}
 }

@@ -44,7 +44,7 @@ public class Test implements CommandExecutor {
 		HashMap<UUID, Set<PlayerData>> all = PlayerDataManager.getAllPlayerDataList();
 
 		if (args[0].equalsIgnoreCase("online")) {
-			Bukkit.broadcastMessage(String.valueOf(online));
+			Bukkit.broadcastMessage(SellChestManager.getSellChestItems().get(uuid).toString());
 		}
 
 		if (args[0].equalsIgnoreCase("offline")) {
@@ -70,7 +70,7 @@ public class Test implements CommandExecutor {
 				sellChestManager.startGenDrops(uuid);
 				sender.sendMessage("Started generating items for player " + uuid);
 			} else if (args[1].equalsIgnoreCase("list")) {
-				sender.sendMessage("SellChestLoc: " + SellChestManager.getSellChestPlayerLocationList().get(uuid));
+				sender.sendMessage("SellChestLoc: " + SellChestManager.getSellChestItems().get(uuid));
 			} else if (args[1].equalsIgnoreCase("save")) {
 				Bukkit.broadcastMessage("Saved");
 			}

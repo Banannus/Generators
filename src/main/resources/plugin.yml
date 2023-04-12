@@ -7,3 +7,5 @@ description: Generators
 commands:
   gen:
     description: Command
+  multiplier:
+    description: test

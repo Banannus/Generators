@@ -2,7 +2,6 @@ package dk.banannus.generators.data.sellchest;
 
 import dk.banannus.generators.Generators;
 import dk.banannus.generators.data.file.FileManager;
-import org.bukkit.Bukkit;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.YamlConfiguration;
 
@@ -11,10 +10,10 @@ import java.io.IOException;
 import java.util.UUID;
 
 public class SellChestItem {
-	private final int amount;
+	private final double amount;
 	private final String key;
 
-	public SellChestItem(String key, int amount) {
+	public SellChestItem(String key, double amount) {
 		this.amount = amount;
 		this.key = key;
 	}
@@ -23,7 +22,7 @@ public class SellChestItem {
 		return key;
 	}
 
-	public int getAmount() {
+	public double getAmount() {
 		return amount;
 	}
 
@@ -45,13 +44,11 @@ public class SellChestItem {
 		}
 
 		String newIndex = String.valueOf(maxIndex + 1);
-		Bukkit.broadcastMessage("newIndex - " + newIndex);
 
 		ConfigurationSection sellchestData = config.getConfigurationSection("sellchest." + newIndex);
 		if (sellchestData == null) {
 			sellchestData = config.createSection("sellchest." + newIndex);
 		}
-
 
 		sellchestData.set("key", getKey());
 		sellchestData.set("amount", getAmount());

@@ -46,8 +46,6 @@ public class PlayerData {
 
 		YamlConfiguration config = YamlConfiguration.loadConfiguration(file);
 
-		config.set("slots", SlotsManager.getSlots(uuid));
-
 		ConfigurationSection gensSection = config.getConfigurationSection("gens");
 
 		int maxIndex = 0;

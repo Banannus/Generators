@@ -3,13 +3,15 @@ gens:
     block: "CLAY"
     name: "&7&lCLAY &f&lGENERATOR"
     drop: "CLAY_BALL"
+    dropName: "&7&lCLAY"
     salgspris: 10
     xp: 0.1
     upgradepris: 1000
   2:
     block: "STAINED_CLAY"
     name: "&f&lWHITE CLAY &f&lGENERATOR"
-    drop: "BONEMEAL"
+    drop: "INK_SACK:15"
+    dropName: "&f&lBONEMEAL"
     salgspris: 10
     xp: 0.1
     upgradepris: 1000
@@ -17,6 +19,7 @@ gens:
     block: "STAINED_CLAY:4"
     name: "&e&lYELLOW CLAY &f&lGENERATOR"
     drop: "INK_SACK:11"
+    dropName: "&e&lYELLOW DYE"
     salgspris: 10
     xp: 0.1
     upgradepris: 1000
@@ -24,6 +27,7 @@ gens:
     block: "STAINED_CLAY:1"
     name: "&6&lORANGE CLAY &f&lGENERATOR"
     drop: "INK_SACK:14"
+    dropName: "&6&lORANGE DYE"
     salgspris: 10
     xp: 0.1
     upgradepris: 1000
@@ -31,6 +35,7 @@ gens:
     block: "STAINED_CLAY:3"
     name: "&9&lLIGHT BLUE CLAY &f&lGENERATOR"
     drop: "INK_SACK:12"
+    dropName: "&b&lLIGHT BLUE DYE"
     salgspris: 10
     xp: 0.1
     upgradepris: 1000

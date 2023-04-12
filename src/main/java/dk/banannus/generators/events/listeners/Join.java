@@ -26,7 +26,7 @@ public class Join implements Listener {
 		SellChestManager sellChestManager = new SellChestManager();
 		sellChestManager.loadSellChestItems(uuid);
 		sellChestManager.loadSellChest(uuid);
-
+		sellChestManager.startGenDrops(uuid);
 
 	}
 }

@@ -8,6 +8,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.YamlConfiguration;
+import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.scheduler.BukkitScheduler;
 
 import java.io.File;
@@ -19,19 +20,58 @@ public class SellChestManager {
 	private static HashMap<UUID, Set<SellChestItem>> sellChestItems = new HashMap<>();
 	private static HashMap<UUID, Integer> genTasks = new HashMap<>();
 	private static HashMap<UUID, Location> sellChestPlayerLocation = new HashMap<>();
-	public static HashMap<UUID, Set<SellChestItem>> getSellChestItems() {
+
+	public static synchronized HashMap<UUID, Set<SellChestItem>> getSellChestItems() {
 		return sellChestItems;
 	}
 
-	public static HashMap<UUID, Location> getSellChestPlayerLocationList() {
+	public static synchronized HashMap<UUID, Location> getSellChestPlayerLocationList() {
 		return sellChestPlayerLocation;
 	}
 
+	private static List<BukkitRunnable> sellChestItemsChangeListeners = new ArrayList<>();
+
+	public static void addSellChestItemsChangeListener(BukkitRunnable listener) {
+		sellChestItemsChangeListeners.add(listener);
+	}
+
+	public static void removeSellChestItemsChangeListener(BukkitRunnable  listener) {
+		sellChestItemsChangeListeners.remove(listener);
+	}
+
+	public static void fireSellChestItemsChangedEvent() {
+		for (BukkitRunnable listener : sellChestItemsChangeListeners) {
+			if(listener != null) {
+				listener.run();
+			}
+		}
+	}
+
+	public static synchronized void removeSellChestItem(UUID uuid, SellChestItem sellChestItem) {
+		Set<SellChestItem> sellChestItemsForPlayer = sellChestItems.get(uuid);
+		if (sellChestItemsForPlayer != null) {
+			sellChestItemsForPlayer.remove(sellChestItem);
+		}
+	}
+
+	public static List<Location> getAllLocations() {
+
+		List<Location> allLocations = new ArrayList<>();
+
+		for (UUID uuid : sellChestPlayerLocation.keySet()) {
+			Location loc = sellChestPlayerLocation.get(uuid);
+			allLocations.add(loc);
+		}
+		return allLocations;
+	}
 
 	public void startGenDrops(UUID uuid) {
-		int taskId = Bukkit.getScheduler().scheduleSyncRepeatingTask(Generators.instance, new Runnable() {
+		int taskId = Bukkit.getScheduler().runTaskTimer(Generators.instance, new Runnable() {
 			public void run() {
 				Set<PlayerData> playerDataSet = PlayerDataManager.getOnlinePlayerDataList().get(uuid);
+				if(playerDataSet == null) {
+					return;
+				}
 				Set<SellChestItem> sellChestItems = SellChestManager.sellChestItems.computeIfAbsent(uuid, k -> new HashSet<>());
 				for (PlayerData playerData : playerDataSet) {
 					String key = playerData.getKey();
@@ -50,8 +90,9 @@ public class SellChestManager {
 						sellChestItems.add(sellChestItem);
 					}
 				}
+				SellChestManager.fireSellChestItemsChangedEvent();
 			}
-		}, 0, 100);
+		}, 0, 100).getTaskId();
 		genTasks.put(uuid, taskId);
 	}
 
@@ -72,6 +113,9 @@ public class SellChestManager {
 
 		ConfigurationSection itemsSection = config.getConfigurationSection("sellchest");
 		HashSet<SellChestItem> sellChestItemHashSet = new HashSet<>();
+		if(itemsSection == null) {
+			return;
+		}
 		for(String key : itemsSection.getKeys(false)) {
 			ConfigurationSection itemSection = itemsSection.getConfigurationSection(key);
 			String genKey = itemSection.getString("key");
@@ -98,6 +142,9 @@ public class SellChestManager {
 			chestSection = config.createSection("sellchestLoc");
 		}
 		Location location = sellChestPlayerLocation.get(uuid);
+		if(location == null) {
+			return;
+		}
 		chestSection.set("location.world", location.getWorld().getName());
 		chestSection.set("location.x", location.getX());
 		chestSection.set("location.y", location.getY());
@@ -110,6 +157,8 @@ public class SellChestManager {
 		}
 	}
 
+
+
 	public void loadSellChest(UUID uuid) {
 		FileManager fileManager = new FileManager(Generators.instance);
 		File file = fileManager.getPlayerFile(uuid);
@@ -117,8 +166,13 @@ public class SellChestManager {
 		YamlConfiguration config = YamlConfiguration.loadConfiguration(file);
 
 		ConfigurationSection sellChestLocSection = config.getConfigurationSection("sellchestLoc");
+		if(sellChestLocSection == null) {
+			return;
+		}
 		ConfigurationSection locationSection = sellChestLocSection.getConfigurationSection("location");
-
+		if(locationSection == null) {
+			return;
+		}
 		String worldName = locationSection.getString("world");
 		double x = locationSection.getDouble("x");
 		double y = locationSection.getDouble("y");

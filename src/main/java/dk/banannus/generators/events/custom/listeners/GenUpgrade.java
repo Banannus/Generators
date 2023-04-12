@@ -36,61 +36,55 @@ public class GenUpgrade implements Listener {
 
 		Player player = e.getPlayer();
 
-		if(!player.isSneaking()) {
+		if(e.getPlayer().getItemInHand().getType() != Material.AIR) {
 			return;
 		}
 
-		if(e.getAction() == Action.RIGHT_CLICK_BLOCK) {
+		Material clickedBlockMaterial = e.getClickedBlock().getType();
 
-			if(e.getPlayer().getItemInHand().getType() != Material.AIR) {
-				return;
-			}
+		if(GensManager.isGenNotBlock(clickedBlockMaterial)) {
+			return;
+		}
 
-			Material clickedBlockMaterial = e.getClickedBlock().getType();
+		Location blockLoc = e.getClickedBlock().getLocation();
+		UUID uuid = e.getPlayer().getUniqueId();
 
-			if(GensManager.isGenNotBlock(clickedBlockMaterial)) {
-				return;
-			}
+		HashMap<Location, String> locations = playerDataManager.getAllPlayerLocations(uuid);
 
-			Location blockLoc = e.getClickedBlock().getLocation();
-			UUID uuid = e.getPlayer().getUniqueId();
+		if(!locations.containsKey(blockLoc)) {
+			return;
+		}
 
-			HashMap<Location, String> locations = playerDataManager.getAllPlayerLocations(uuid);
+		String key = locations.get(blockLoc);
 
-			if(!locations.containsKey(blockLoc)) {
-				return;
-			}
+		if(maxGens(Integer.parseInt(key))) {
+			ConfigManager.send(player, "messages.max-upgrade");
+			return;
+		}
 
-			String key = locations.get(blockLoc);
+		if(econ.getBalance(player) >= GensManager.getGenList().get(key).getUpgradepris()) {
+			int keyInt = Integer.parseInt(key) + 1;
+			String nextKey = String.valueOf(keyInt);
 
-			if(maxGens(Integer.parseInt(key))) {
-				ConfigManager.send(player, "messages.max-upgrade");
-				return;
-			}
+			econ.withdrawPlayer(player, GensManager.getGenList().get(key).getUpgradepris());
 
-			if(econ.getBalance(player) >= GensManager.getGenList().get(key).getUpgradepris()) {
-				int keyInt = Integer.parseInt(key) + 1;
-				String nextKey = String.valueOf(keyInt);
+			playerDataManager.removeGen(blockLoc, uuid);
+			playerDataManager.saveGen(nextKey, blockLoc, uuid);
 
-				econ.withdrawPlayer(player, GensManager.getGenList().get(key).getUpgradepris());
+			HashMap<String, ItemStack> materials = GensManager.ReverseGenBlocksList();
+			ItemStack itemStack = materials.get(nextKey);
 
-				playerDataManager.removeGen(blockLoc, uuid);
-				playerDataManager.saveGen(nextKey, blockLoc, uuid);
+			e.getClickedBlock().setType(itemStack.getType());
+			e.getClickedBlock().setData(itemStack.getData().getData());
 
-				HashMap<String, ItemStack> materials = GensManager.ReverseGenBlocksList();
-				ItemStack itemStack = materials.get(nextKey);
-
-				e.getClickedBlock().setType(itemStack.getType());
-				e.getClickedBlock().setData(itemStack.getData().getData());
-
-			} else {
-				int difference = (int) (GensManager.getGenList().get(key).getUpgradepris() - econ.getBalance(player));
-				NumberFormat formatter = new DecimalFormat("#,###", new DecimalFormatSymbols(Locale.GERMANY));
-				String money_format = formatter.format(difference);
-				ConfigManager.send(player, "messages.no-money", "%money%", money_format);
-			}
+		} else {
+			int difference = (int) (GensManager.getGenList().get(key).getUpgradepris() - econ.getBalance(player));
+			NumberFormat formatter = new DecimalFormat("#,###", new DecimalFormatSymbols(Locale.GERMANY));
+			String money_format = formatter.format(difference);
+			ConfigManager.send(player, "messages.no-money", "%money%", money_format);
 		}
 	}
+
 
 	private boolean maxGens(int checkKey) {
 		Set<String> allKeys = GensManager.getGenList().keySet();

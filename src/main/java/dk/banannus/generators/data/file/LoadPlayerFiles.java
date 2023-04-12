@@ -88,6 +88,17 @@ public class LoadPlayerFiles {
 						sellChestItemHashSet.add(sellChestItem);
 					}
 					SellChestManager.getSellChestItems().put(uuid, sellChestItemHashSet);
+
+					ConfigurationSection sellChestLocSection = playerConfig.getConfigurationSection("sellchestLoc");
+					ConfigurationSection locationSection = sellChestLocSection.getConfigurationSection("location");
+
+					String worldName = locationSection.getString("world");
+					double x = locationSection.getDouble("x");
+					double y = locationSection.getDouble("y");
+					double z = locationSection.getDouble("z");
+
+					Location location = new Location(Bukkit.getWorld(worldName), x, y, z);
+					SellChestManager.getSellChestPlayerLocationList().put(uuid, location);
 				}
 			}
 		} catch (Exception e){

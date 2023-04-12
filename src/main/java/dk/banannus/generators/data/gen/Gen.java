@@ -10,9 +10,9 @@ public class Gen {
 	private final int salgspris;
 	private final double xp;
 	private final int upgradepris;
+	private final String dropName;
 
-
-	public Gen(String key, String block, String name, String drop, int salgspris, double xp, int upgradepris) {
+	public Gen(String key, String block, String name, String drop, String dropName, int salgspris, double xp, int upgradepris) {
 		this.block = block;
 		this.name = name;
 		this.drop = drop;
@@ -20,6 +20,7 @@ public class Gen {
 		this.xp = xp;
 		this.upgradepris = upgradepris;
 		this.key = key;
+		this.dropName = dropName;
 	}
 
 	public String getKey() {
@@ -48,5 +49,9 @@ public class Gen {
 
 	public int getUpgradepris() {
 		return upgradepris;
+	}
+
+	public String getDropName() {
+		return dropName;
 	}
 }

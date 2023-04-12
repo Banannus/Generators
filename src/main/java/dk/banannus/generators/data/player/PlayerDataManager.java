@@ -121,6 +121,9 @@ public class PlayerDataManager {
 
 		HashSet<PlayerData> playerDataManagerHashSet = new HashSet<>();
 		ConfigurationSection gensSection = config.getConfigurationSection("gens");
+		if(gensSection == null) {
+			return;
+		}
 		for(String key : gensSection.getKeys(false)) {
 			ConfigurationSection genSection = gensSection.getConfigurationSection(key);
 			String genKey = genSection.getString("key");
@@ -142,7 +145,7 @@ public class PlayerDataManager {
 		allPlayerData.put(uuid, playerDataManagerHashSet);
 	}
 
-	public static void unloadPlayerData(UUID uuid, boolean all) {
+	public void unloadPlayerData(UUID uuid, boolean all) {
 		if(all) {
 			offlinePlayerData.put(uuid, onlinePlayerData.get(uuid));
 			allPlayerData.put(uuid, onlinePlayerData.get(uuid));

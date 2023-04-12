@@ -9,10 +9,6 @@ public class SlotsManager {
 
 	private static HashMap<UUID, Integer> slots = new HashMap<>();
 
-	public static HashMap<UUID, Integer> getSlotsList() {
-		return slots;
-	}
-
 	public static void setSlots(UUID uuid, int amount) {
 		slots.put(uuid, amount);
 	}

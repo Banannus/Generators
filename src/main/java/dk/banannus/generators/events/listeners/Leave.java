@@ -10,17 +10,16 @@ import java.util.UUID;
 
 public class Leave implements Listener {
 
-	private final PlayerDataManager playerDataManager;
-
-	public Leave() {
-		this.playerDataManager = new PlayerDataManager();
-	}
-
 	@EventHandler
 	public void onLeave(PlayerQuitEvent e) {
 		UUID uuid = e.getPlayer().getUniqueId();
+		PlayerDataManager playerDataManager = new PlayerDataManager();
 		SellChestManager sellChestManager = new SellChestManager();
+		playerDataManager.saveAll(uuid);
+		sellChestManager.saveSellChest(uuid);
 		sellChestManager.unLoadSellChest(uuid);
-		PlayerDataManager.unloadPlayerData(uuid, true);
+		sellChestManager.cancelGenDrops(uuid);
+		playerDataManager.unloadPlayerData(uuid, true);
+
 	}
 }

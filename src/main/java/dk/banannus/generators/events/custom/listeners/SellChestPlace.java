@@ -4,6 +4,7 @@ import dk.banannus.generators.data.file.ConfigManager;
 import dk.banannus.generators.data.sellchest.SellChestManager;
 import dk.banannus.generators.events.custom.events.SellChestPlaceEvent;
 import org.bukkit.Bukkit;
+import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 
@@ -12,13 +13,11 @@ public class SellChestPlace implements Listener {
 	@EventHandler
 	public void onSellChestPlace(SellChestPlaceEvent e) {
 
-		if(!ConfigManager.get("sell-chest.name")[0].equals(e.getPlayer().getItemInHand().getItemMeta().getDisplayName())) {
-			return;
-		}
+		Player player = e.getPlayer();;
 
 		SellChestManager sellChestManager = new SellChestManager();
-		sellChestManager.saveChest(e.getBlock().getLocation(), e.getPlayer().getUniqueId());
+		sellChestManager.saveChest(e.getBlock().getLocation(), player.getUniqueId());
 
-		Bukkit.broadcastMessage("yes");
+		ConfigManager.send(player, "messages.place-sell-chest");
 	}
 }

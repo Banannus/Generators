@@ -6,11 +6,21 @@ messages:
   max-upgrade: "&c✘ Du har opgraderet dine gens til max niveau!"
   max-gens: "&c✘ Du har ikke plads til flere generators!"
   no-money: "&c✘ Du mangler $%money% før du kan opgradere!"
+  place-sell-chest: "&a✔ Du placerede en sell-chest!"
+  sell-chest-placed: "&c✘ Du har allerede en sell-chest placeret!"
+  sell-gui-pr-item: "&a[!] &fDu solgte &a%amount% &fitems for &a$&f%money%"
+  sell-stick-all-items: "&a[!] &fDu solgte &a%amount% &fitems &a$&f%money%"
 
 numbers:
   start-gens: 20
+  start-multiplier: 1
+  sell-stick-multiplier: 4
+  sell-stick-name: "&6&lSELL &f&lSTICK"
 
 sell-chest:
   name: "&3&lSELL &f&lCHEST"
+  item-name: "%item% &8(&a%amount%&8)"
+  lore:
+    - "&a&l* &fTryk for at sælge"
 
 

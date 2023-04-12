@@ -1,5 +1,6 @@
 package dk.banannus.generators;
 
+import dk.banannus.generators.commands.Multiplier;
 import dk.banannus.generators.data.file.ConfigManager;
 import dk.banannus.generators.data.file.LoadPlayerFiles;
 import dk.banannus.generators.data.gen.GensManager;
@@ -23,6 +24,12 @@ public final class Generators extends JavaPlugin {
     public static Economy econ = null;
     public static LoadPlayerFiles loadPlayerFiles;
 
+    // TODO: Add sell-chest break
+    // TODO: Add checks til hvis man har en sell-chest/gens/items ved gemning af data (Leave)
+    // TODO: Add xp til alting
+    // TODO: Add checks til sell-chest tom
+    // TODO: FIX THIS SHIT
+
 
     @Override
     public void onEnable() {
@@ -32,6 +39,7 @@ public final class Generators extends JavaPlugin {
         // Commands
 
         getCommand("gen").setExecutor(new Test());
+        getCommand("multiplier").setExecutor(new Multiplier());
 
         // Listeners
 
@@ -96,5 +104,9 @@ public final class Generators extends JavaPlugin {
         }
         econ = rsp.getProvider();
         return econ != null;
+    }
+
+    public static Generators getInstance() {
+        return instance;
     }
 }
