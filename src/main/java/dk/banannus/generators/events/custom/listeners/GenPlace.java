@@ -19,6 +19,10 @@ public class GenPlace implements Listener {
 	public void onGenPlace(GenPlaceEvent e) {
 
 		//DOUBLE CHECK
+		if(e.getPlayer().getItemInHand().getItemMeta().getDisplayName() == null) {
+			return;
+		}
+
 		if(!GensManager.getGenNames().contains(Chat.plain(e.getPlayer().getItemInHand().getItemMeta().getDisplayName()))) {
 			return;
 		}

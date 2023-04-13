@@ -6,6 +6,4 @@ authors: [ Banannus ]
 description: Generators
 commands:
   gen:
-    description: Command
-  multiplier:
-    description: test
+    description: Command til Generators Plugin.

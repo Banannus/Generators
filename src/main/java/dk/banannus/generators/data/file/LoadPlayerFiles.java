@@ -34,7 +34,6 @@ public class LoadPlayerFiles {
 			}
 
 			File[] playerFiles = playersFolder.listFiles();
-			System.out.println(Arrays.toString(playersFolder.listFiles()));
 			if (playerFiles == null) {
 				return;
 			}
@@ -47,7 +46,6 @@ public class LoadPlayerFiles {
 				String fileName = playerFile.getName();
 				if (fileName.endsWith(".yml")) {
 					UUID uuid = UUID.fromString(fileName.substring(0, fileName.length() - 4));
-					System.out.println(uuid);
 					FileConfiguration playerConfig = YamlConfiguration.loadConfiguration(playerFile);
 
 					HashSet<PlayerData> playerDataManagerHashSet = new HashSet<>();

@@ -72,6 +72,17 @@ public class GensManager {
 		}
 	}
 
+	public static ItemStack getBlockItemStack(String key) {
+		Gen gen = GensManager.getGenList().get(key);
+		String drop = gen.getBlock();
+		if (!drop.contains(":")) {
+			return new ItemStack(Material.valueOf(drop));
+		} else {
+			String[] parts = drop.split(":");
+			return new ItemStack(Material.valueOf(parts[0]), 1, (short) Integer.parseInt(parts[1]));
+		}
+	}
+
 	public static void loadGens() {
 		ConfigurationSection gensSection = Generators.gensYML.getConfigurationSection("gens");
 

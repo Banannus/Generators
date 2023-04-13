@@ -2,10 +2,7 @@ package dk.banannus.generators.utils;
 
 import net.md_5.bungee.api.ChatColor;
 
-import net.md_5.bungee.api.ChatColor;
-
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 public class Chat {

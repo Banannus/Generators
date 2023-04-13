@@ -27,13 +27,15 @@ public class MultiplierManager {
 		playerMultipliers.put(playerUUID, playerMultiplier);
 	}
 
-	public static void addPlayerMultiplier(Player player, double amount) {
-		double currentMultiplier =  playerMultipliers.get(player.getUniqueId());
+	public static void addPlayerMultiplier(UUID uuid, double amount) {
+		double currentMultiplier =  playerMultipliers.get(uuid);
 		double newMultiplier = currentMultiplier + amount;
-		setPlayerMultiplier(player.getUniqueId(), newMultiplier);
+		setPlayerMultiplier(uuid, newMultiplier);
 	}
 
-	public static void removePlayerMultiplier(UUID playerUUID) {
-		playerMultipliers.remove(playerUUID);
+	public static void removePlayerMultiplier(UUID uuid, double amount) {
+		double currentMultiplier =  playerMultipliers.get(uuid);
+		double newMultiplier = currentMultiplier - amount;
+		setPlayerMultiplier(uuid, newMultiplier);
 	}
 }

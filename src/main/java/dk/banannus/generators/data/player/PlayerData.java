@@ -12,10 +12,10 @@ import java.util.*;
 
 public class PlayerData {
 
-	private final String key;
-	private final Location location;
-	private final String block;
-	private final String name;
+	private String key;
+	private Location location;
+	private String block;
+	private String name;
 
 	public PlayerData(String key, Location location, String block, String name) {
 		this.key = key;
@@ -23,6 +23,7 @@ public class PlayerData {
 		this.block = block;
 		this.name = name;
 	}
+
 
 	public String getKey() {
 		return key;

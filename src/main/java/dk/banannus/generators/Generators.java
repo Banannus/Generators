@@ -1,10 +1,9 @@
 package dk.banannus.generators;
 
-import dk.banannus.generators.commands.Multiplier;
 import dk.banannus.generators.data.file.ConfigManager;
 import dk.banannus.generators.data.file.LoadPlayerFiles;
 import dk.banannus.generators.data.gen.GensManager;
-import dk.banannus.generators.commands.Test;
+import dk.banannus.generators.commands.GeneratorsMainCommand;
 import dk.banannus.generators.events.*;
 import dk.banannus.generators.utils.Config;
 import net.milkbowl.vault.economy.Economy;
@@ -28,7 +27,6 @@ public final class Generators extends JavaPlugin {
     // TODO: Add checks til hvis man har en sell-chest/gens/items ved gemning af data (Leave)
     // TODO: Add xp til alting
     // TODO: Add checks til sell-chest tom
-    // TODO: FIX THIS SHIT
 
 
     @Override
@@ -38,8 +36,7 @@ public final class Generators extends JavaPlugin {
 
         // Commands
 
-        getCommand("gen").setExecutor(new Test());
-        getCommand("multiplier").setExecutor(new Multiplier());
+        getCommand("gen").setExecutor(new GeneratorsMainCommand());
 
         // Listeners
 

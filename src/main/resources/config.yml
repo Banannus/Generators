@@ -10,6 +10,25 @@ messages:
   sell-chest-placed: "&c✘ Du har allerede en sell-chest placeret!"
   sell-gui-pr-item: "&a[!] &fDu solgte &a%amount% &fitems for &a$&f%money%"
   sell-stick-all-items: "&a[!] &fDu solgte &a%amount% &fitems &a$&f%money%"
+  no-gens-in-list: "&cDer findes ingen generators!"
+  prefix: "&8&l[ &d&lGENERATORS &8&l]"
+  player-does-not-exist: "&cSpilleren eksistere ikke!"
+  add-multi-to-player: "&a[!] &fDu gav &a%player% &a%multi% &fmulti. &a%player%s &fmulti er nu &a%totalmulti%"
+  remove-multi-from-player: "&a[!] &fDu fjernede &a%multi% &ffra &a%player%. &a%player%s &fmulti er nu &a%totalmulti%"
+
+GUI:
+  top-row: "&f"
+  bottom-row: "&d"
+  lore-pr-item:
+    - ""
+    - "&8┃ &7Drop: &f%drop%"
+    - "&8┃ &7Salgspris &f%salgspris%"
+    - "&8┃ &7Xp: &f%xp%"
+    - "&8┃ &7Upgradepris: &f%upgrade%"
+
+admin:
+  staff-permission: "generators.staff-permission"
+  staff-deny-message: "&cDu har ikke adgang til denne kommando!"
 
 numbers:
   start-gens: 20
