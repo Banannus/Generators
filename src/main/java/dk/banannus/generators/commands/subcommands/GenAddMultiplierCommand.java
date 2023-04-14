@@ -38,6 +38,6 @@ public class GenAddMultiplierCommand extends SubCommand {
 			} else {
 				ConfigManager.send(player, "messages.player-does-not-exist");
 			}
-		}
+		}                      
 	}
 }

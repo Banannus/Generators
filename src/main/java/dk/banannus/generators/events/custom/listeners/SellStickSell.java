@@ -48,6 +48,6 @@ public class SellStickSell implements Listener {
 		String totalForm = df.format(totalAmount);
 
 		econ.depositPlayer(player , lastPrice);
-		player.sendMessage(ConfigManager.get("messages.sell-stick-all-items", "%amount%", Chat.colored(String.valueOf(totalForm)), "%money%", Chat.colored(String.valueOf(formatted))));
+		ConfigManager.send(player, "messages.sell-stick-all-items", "%amount%", Chat.colored(String.valueOf(totalForm)), "%money%", Chat.colored(String.valueOf(formatted)));
 	}
 }

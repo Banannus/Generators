@@ -80,7 +80,7 @@ public class SellChestOpen implements Listener {
 								double multi = MultiplierManager.getPlayerMultiplier(player.getUniqueId()) * price;
 								econ.depositPlayer(player, price);
 								String multiForm = df.format(multi);
-								player.sendMessage(ConfigManager.get("messages.sell-gui-pr-item", "%amount%", Chat.colored(String.valueOf(formatted)), "%money%", Chat.colored(String.valueOf(multiForm))));
+								ConfigManager.send(player, "messages.sell-gui-pr-item", "%amount%", Chat.colored(String.valueOf(formatted)), "%money%", Chat.colored(String.valueOf(multiForm)));
 								gui.removeItem(event.getSlot());
 								gui.update();
 							});

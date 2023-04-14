@@ -46,4 +46,23 @@ public class ConfigManager {
 		player.sendMessage(get(path));
 	}
 
+	public static void send(CommandSender player, String path, String... replacements) {
+		String[] messages = get(path);
+		for (String message : messages) {
+			for (int i = 0; i < replacements.length; i += 2) {
+				message = message.replaceAll(replacements[i], replacements[i+1]);
+			}
+			player.sendMessage(message);
+		}
+	}
+
+	public static String[] get(String path, String... replacements) {
+		String[] messages = get(path);
+		for (String message : messages) {
+			for (int i = 0; i < replacements.length; i += 2) {
+				message = message.replaceAll(replacements[i], replacements[i+1]);
+			}
+		}
+		return messages;
+	}
 }
