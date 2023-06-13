@@ -7,6 +7,7 @@ import dk.banannus.generators.data.file.ConfigManager;
 import dk.banannus.generators.data.gen.Gen;
 import dk.banannus.generators.data.gen.GensManager;
 import dk.banannus.generators.data.player.MultiplierManager;
+import dk.banannus.generators.data.player.XpManager;
 import dk.banannus.generators.data.sellchest.SellChestItem;
 import dk.banannus.generators.data.sellchest.SellChestManager;
 import dk.banannus.generators.events.custom.events.SellChestOpenEvent;
@@ -15,6 +16,7 @@ import net.kyori.adventure.text.Component;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
+import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.scheduler.BukkitRunnable;
@@ -27,12 +29,18 @@ import static dk.banannus.generators.data.sellchest.SellChestManager.removeSellC
 
 public class SellChestOpen implements Listener {
 
-	@EventHandler
+	@EventHandler (priority =  EventPriority.HIGHEST)
 	public void onSellChestOpen(SellChestOpenEvent e) {
+
+		if(e.isCancelled()) {
+			e.setCancelled(true);
+			return;
+		}
 
 		Set<SellChestItem> sellChestItemSet = SellChestManager.getSellChestItems().get(e.getPlayer().getUniqueId());
 		if (sellChestItemSet == null) {
-			Bukkit.broadcastMessage("Tom");
+			ConfigManager.send(e.getPlayer(), "messages.sell-chest-empty");
+			e.setCancelled(true);
 			return;
 		}
 
@@ -54,6 +62,7 @@ public class SellChestOpen implements Listener {
 
 		SellChestManager.addSellChestItemsChangeListener(new BukkitRunnable() {
 
+
 			Set<SellChestItem> sellChestItemSet = SellChestManager.getSellChestItems().get(player.getUniqueId());
 
 			public void run() {
@@ -61,6 +70,7 @@ public class SellChestOpen implements Listener {
 					removeSellChestItemsChangeListener(this);
 					return;
 				}
+				if(sellChestItemSet == null) return;
 				gui.getGuiItems().clear();
 				int index = 0;
 				for (SellChestItem sellChestItem : sellChestItemSet) {
@@ -76,6 +86,8 @@ public class SellChestOpen implements Listener {
 							.asGuiItem(event -> {
 								event.setCancelled(true);
 								SellChestManager.removeSellChestItem(player.getUniqueId(), sellChestItem);
+								double genXP = GensManager.getGenList().get(key).getXp();
+								XpManager.setXP(player.getUniqueId(), XpManager.getXP(player.getUniqueId()) + genXP);
 								double price = gen.getSalgspris() * amount;
 								double multi = MultiplierManager.getPlayerMultiplier(player.getUniqueId()) * price;
 								econ.depositPlayer(player, price);

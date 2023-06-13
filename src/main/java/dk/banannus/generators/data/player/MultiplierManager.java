@@ -7,9 +7,8 @@ import java.util.UUID;
 
 public class MultiplierManager {
 
-
 	private static double globalMultiplier = 1.0;
-	private static HashMap<UUID, Double> playerMultipliers = new HashMap<>();
+	public static HashMap<UUID, Double> playerMultipliers = new HashMap<>();
 
 	public static double getGlobalMultiplier()  {
 		return globalMultiplier;
@@ -22,6 +21,8 @@ public class MultiplierManager {
 	public static double getPlayerMultiplier(UUID uuid) {
 		return playerMultipliers.getOrDefault(uuid, 1.0);
 	}
+
+
 
 	public static void setPlayerMultiplier(UUID playerUUID, double playerMultiplier) {
 		playerMultipliers.put(playerUUID, playerMultiplier);

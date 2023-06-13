@@ -12,30 +12,102 @@ gens:
     name: "&f&lWHITE CLAY &f&lGENERATOR"
     drop: "INK_SACK:15"
     dropName: "&f&lBONEMEAL"
-    salgspris: 10
-    xp: 0.1
-    upgradepris: 1000
+    salgspris: 40
+    xp: 0.3
+    upgradepris: 5000
   3:
     block: "STAINED_CLAY:4"
     name: "&e&lYELLOW CLAY &f&lGENERATOR"
     drop: "INK_SACK:11"
     dropName: "&e&lYELLOW DYE"
-    salgspris: 10
-    xp: 0.1
-    upgradepris: 1000
+    salgspris: 75
+    xp: 0.6
+    upgradepris: 40000
   4:
     block: "STAINED_CLAY:1"
     name: "&6&lORANGE CLAY &f&lGENERATOR"
     drop: "INK_SACK:14"
     dropName: "&6&lORANGE DYE"
-    salgspris: 10
-    xp: 0.1
-    upgradepris: 1000
+    salgspris: 110
+    xp: 1
+    upgradepris: 100000
   5:
     block: "STAINED_CLAY:3"
     name: "&9&lLIGHT BLUE CLAY &f&lGENERATOR"
     drop: "INK_SACK:12"
     dropName: "&b&lLIGHT BLUE DYE"
-    salgspris: 10
-    xp: 0.1
-    upgradepris: 1000
+    salgspris: 175
+    xp: 1.5
+    upgradepris: 500000
+  6:
+    block: "STAINED_CLAY:5"
+    name: "&a&lLIME CLAY &f&lGENERATOR"
+    drop: "INK_SACK:10"
+    dropName: "&a&LIME DYE"
+    salgspris: 225
+    xp: 2.1
+    upgradepris: 1000000
+  7:
+    block: "STAINED_CLAY:2"
+    name: "&5&lMAGENTA CLAY &f&lGENERATOR"
+    drop: "INK_SACK:13"
+    dropName: "&5&lMAGENTA DYE"
+    salgspris: 285
+    xp: 2.7
+    upgradepris: 3000000
+  8:
+    block: "STAINED_CLAY:6"
+    name: "&d&lPINK CLAY &f&lGENERATOR"
+    drop: "INK_SACK:9"
+    dropName: "&d&l DYE"
+    salgspris: 325
+    xp: 3.5
+    upgradepris: 6500000
+  9:
+    block: "STAINED_CLAY:9"
+    name: "&3&lCYAN CLAY &f&lGENERATOR"
+    drop: "INK_SACK:8"
+    dropName: "&3&lGRAY DYE"
+    salgspris: 450
+    xp: 6.7
+    upgradepris: 15000000
+  10:
+    block: "STAINED_CLAY:11"
+    name: "&9&lBLUE CLAY &f&lGENERATOR"
+    drop: "INK_SACK:5"
+    dropName: "&9&lPURPLE DYE"
+    salgspris: 225
+    xp: 2.1
+    upgradepris: 1000000
+  11:
+    block: "STAINED_CLAY:12"
+    name: "&7&lBROWN CLAY &f&lGENERATOR"
+    drop: "INK_SACK:3"
+    dropName: "&7&lCOCAO BEANS"
+    salgspris: 515
+    xp: 8
+    upgradepris: 25000000
+  12:
+    block: "STAINED_CLAY:13"
+    name: "&2&lGREEN CLAY &f&lGENERATOR"
+    drop: "INK_SACK:2"
+    dropName: "&2&lGREEN DYE"
+    salgspris: 600
+    xp: 10
+    upgradepris: 40000000
+  13:
+    block: "STAINED_CLAY:15"
+    name: "&0&lBLACK CLAY &f&lGENERATOR"
+    drop: "INK_SACK:0"
+    dropName: "&0&lBLACK DYE"
+    salgspris: 750
+    xp: 12.5
+    upgradepris: 60000000
+  14:
+    block: "STAINED_CLAY:14"
+    name: "&c&lRED CLAY &f&lGENERATOR"
+    drop: "INK_SACK:1"
+    dropName: "&c&lRED DYE"
+    salgspris: 900
+    xp: 15
+    upgradepris: 75000000

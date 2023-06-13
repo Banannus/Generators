@@ -22,5 +22,4 @@ public class GUI {
 		item.setItemMeta(meta);
 		return item;
 	}
-
 }

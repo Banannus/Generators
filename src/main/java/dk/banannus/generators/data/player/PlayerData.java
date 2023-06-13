@@ -1,6 +1,5 @@
 package dk.banannus.generators.data.player;
 
-import dk.banannus.generators.Generators;
 import dk.banannus.generators.data.file.FileManager;
 import org.bukkit.Location;
 import org.bukkit.configuration.ConfigurationSection;
@@ -41,40 +40,32 @@ public class PlayerData {
 		return name;
 	}
 
-	public void savePlayerGenData(UUID uuid) {
-		FileManager fileManager = new FileManager(Generators.instance);
+	public static void savePlayerGenData(UUID uuid, Set<PlayerData> playerDataManagerSet) {
+		FileManager fileManager = new FileManager();
 		File file = fileManager.getPlayerFile(uuid);
 
 		YamlConfiguration config = YamlConfiguration.loadConfiguration(file);
 
-		ConfigurationSection gensSection = config.getConfigurationSection("gens");
+		int i = 0;
+		for (PlayerData playerData : playerDataManagerSet) {
 
-		int maxIndex = 0;
-		if (gensSection != null) {
-			for (String key : gensSection.getKeys(false)) {
-				int index = Integer.parseInt(key);
-				if (index > maxIndex) {
-					maxIndex = index;
-				}
+			String newIndex = String.valueOf(i + 1);
+
+			ConfigurationSection blockData = config.getConfigurationSection("gens." + newIndex);
+			if (blockData == null) {
+				blockData = config.createSection("gens." + newIndex);
 			}
-		}
-
-		String newIndex = String.valueOf(maxIndex + 1);
-
-		ConfigurationSection blockData = config.getConfigurationSection("gens." + newIndex);
-		if (blockData == null) {
-			blockData = config.createSection("gens." + newIndex);
-		}
-		blockData.set("key", getKey());
-		blockData.set("location.world", getLocation().getWorld().getName());
-		blockData.set("location.x", getLocation().getX());
-		blockData.set("location.y", getLocation().getY());
-		blockData.set("location.z", getLocation().getZ());
-
-		try {
-			config.save(file);
-		} catch (IOException e) {
-			e.printStackTrace();
+			blockData.set("key", playerData.getKey());
+			blockData.set("location.world", playerData.getLocation().getWorld().getName());
+			blockData.set("location.x", playerData.getLocation().getX());
+			blockData.set("location.y", playerData.getLocation().getY());
+			blockData.set("location.z", playerData.getLocation().getZ());
+			i++;
+			try {
+				config.save(file);
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
 		}
 	}
 }

@@ -4,19 +4,17 @@ import dk.banannus.generators.events.custom.events.utils.CancellableEvent;
 import org.bukkit.Location;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
-import org.bukkit.event.Cancellable;
-import org.bukkit.event.Event;
 import org.bukkit.event.HandlerList;
 import org.bukkit.event.block.Action;
 
-public class GenUpgradeEvent extends CancellableEvent {
+public class SellChestRemoveEvent extends CancellableEvent {
 
 	private static final HandlerList handlers = new HandlerList();
 	private Player player;
 	private Block clickedBlock;
 	private Action action;
 
-	public GenUpgradeEvent(Player player, Block clickedBlock, Action action) {
+	public SellChestRemoveEvent(Player player, Block clickedBlock, Action action) {
 		this.player = player;
 		this.clickedBlock = clickedBlock;
 		this.action = action;
@@ -30,12 +28,12 @@ public class GenUpgradeEvent extends CancellableEvent {
 		return clickedBlock.getLocation();
 	}
 
-	public Action getAction() {
-		return action;
-	}
-
 	public Block getClickedBlock() {
 		return clickedBlock;
+	}
+
+	public Action getAction() {
+		return action;
 	}
 
 	@Override
@@ -48,3 +46,4 @@ public class GenUpgradeEvent extends CancellableEvent {
 	}
 
 }
+

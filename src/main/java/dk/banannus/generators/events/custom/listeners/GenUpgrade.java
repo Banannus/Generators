@@ -9,6 +9,7 @@ import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
+import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
 import org.bukkit.inventory.ItemStack;
@@ -31,8 +32,13 @@ public class GenUpgrade implements Listener {
 		this.playerDataManager = new PlayerDataManager();
 	}
 
-	@EventHandler
+	@EventHandler (priority =  EventPriority.HIGHEST)
 	public void onGenUpgrade(GenUpgradeEvent e) {
+
+		if(e.isCancelled()) {
+			e.setCancelled(true);
+			return;
+		}
 
 		Player player = e.getPlayer();
 

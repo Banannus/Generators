@@ -6,12 +6,18 @@ import dk.banannus.generators.events.custom.events.SellChestPlaceEvent;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
+import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 
 public class SellChestPlace implements Listener {
 
-	@EventHandler
+	@EventHandler (priority =  EventPriority.HIGHEST)
 	public void onSellChestPlace(SellChestPlaceEvent e) {
+
+		if(e.isCancelled()) {
+			e.setCancelled(true);
+			return;
+		}
 
 		Player player = e.getPlayer();;
 

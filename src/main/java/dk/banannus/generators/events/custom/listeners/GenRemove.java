@@ -2,7 +2,7 @@ package dk.banannus.generators.events.custom.listeners;
 
 import dk.banannus.generators.data.file.ConfigManager;
 import dk.banannus.generators.data.gen.Gen;
-import dk.banannus.generators.data.gen.GensManager;
+import dk.banannus.generators.data.gen.GensManager;;
 import dk.banannus.generators.data.player.PlayerDataManager;
 import dk.banannus.generators.events.custom.events.GenRemoveEvent;
 import dk.banannus.generators.utils.Chat;
@@ -10,6 +10,7 @@ import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
+import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
 import org.bukkit.inventory.ItemStack;
@@ -26,10 +27,15 @@ public class GenRemove implements Listener {
 		this.playerDataManager = new PlayerDataManager();
 	}
 
-	@EventHandler
+	@EventHandler (priority =  EventPriority.HIGHEST)
 	@SuppressWarnings("deprecation")
 	public void onGenRemove(GenRemoveEvent e) {
 		if(!e.getPlayer().isSneaking()) {
+			return;
+		}
+
+		if(e.isCancelled()) {
+			e.setCancelled(true);
 			return;
 		}
 

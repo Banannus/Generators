@@ -9,16 +9,17 @@ import dk.banannus.generators.data.file.ConfigManager;
 import dk.banannus.generators.data.gen.Gen;
 import dk.banannus.generators.data.gen.GensManager;
 import dk.banannus.generators.utils.Chat;
+import dk.banannus.generators.utils.Config;
 import dk.banannus.generators.utils.GUI;
 import dk.banannus.generators.utils.GlassColor;
 import net.kyori.adventure.text.Component;
 import org.bukkit.Material;
+import org.bukkit.entity.Item;
 import org.bukkit.entity.Player;
+import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.ItemMeta;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.List;
+import java.util.*;
 
 public class GenListCommand extends SubCommand {
 
@@ -30,7 +31,7 @@ public class GenListCommand extends SubCommand {
 
 	@Override
 	public String getSyntax() {
-		return "&e/gens list";
+		return "&e/gen list";
 	}
 
 	@Override
@@ -70,11 +71,18 @@ public class GenListCommand extends SubCommand {
 			paginatedGui.setItem(6, 3, ItemBuilder.from(Material.PAPER).name(Component.text(Chat.colored("&7Tilbage"))).asGuiItem(event -> paginatedGui.previous()));
 			paginatedGui.setItem(6, 7, ItemBuilder.from(Material.PAPER).name(Component.text(Chat.colored("&7Frem"))).asGuiItem(event -> paginatedGui.next()));
 
+			paginatedGui.setItem(1, 4, ItemBuilder.from(Material.ENDER_CHEST).name(Component.text(ConfigManager.get("sell-chest.name")[0])).asGuiItem(event -> {
+				ItemStack chest = setDisplayName(new ItemStack(Material.ENDER_CHEST), ConfigManager.get("sell-chest.name")[0]);
+				player.getInventory().addItem(chest);
+			}));
+			paginatedGui.setItem(1, 6, ItemBuilder.from(Material.STICK).name(Component.text(ConfigManager.get("numbers.sell-stick-name")[0])).asGuiItem(event -> {
+				ItemStack stick = setDisplayName(new ItemStack(Material.STICK), ConfigManager.get("numbers.sell-stick-name")[0]);
+				player.getInventory().addItem(stick);
+			}));
 
-			HashMap<String, Gen> genListCopy = new HashMap<>(GensManager.getGenList());
 
-			int i = 0;
-			for(Map.Entry<String, Gen> entry : genListCopy.entrySet()) {
+			int i = 8;
+			for(Map.Entry<String, Gen> entry : GensManager.getGenList().entrySet()) {
 				List<Component> componentList = new ArrayList<>();
 				Gen gen = entry.getValue();
 				String[] lores = ConfigManager.get("GUI.lore-pr-item");
@@ -88,11 +96,22 @@ public class GenListCommand extends SubCommand {
 				}
 
 				GuiItem genItem = ItemBuilder.from(GensManager.getBlockItemStack(gen.getKey())).name(Component.text(Chat.colored(gen.getName()))).lore(componentList).asGuiItem(event ->{
-
+					if(!player.hasPermission(ConfigManager.get("admin.staff-permission")[0])) return;
+					ItemStack genBlock = GensManager.getBlockItemStack(gen.getKey());
+					ItemMeta meta = genBlock.getItemMeta();
+					meta.setDisplayName(Chat.colored(gen.getName()));
+					genBlock.setItemMeta(meta);
+					player.getInventory().addItem(genBlock);
 				});
-				paginatedGui.addItem(genItem);
+				paginatedGui.setItem(Integer.parseInt(gen.getKey()) , genItem);
 			}
 			paginatedGui.open(player);
 		}
+	}
+	public static ItemStack setDisplayName(ItemStack block, String displayName) {
+		ItemMeta meta = block.getItemMeta();
+		meta.setDisplayName(displayName);
+		block.setItemMeta(meta);
+		return block;
 	}
 }

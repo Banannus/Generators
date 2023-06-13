@@ -26,5 +26,6 @@ public class ImplementEvents {
 		getServer().getPluginManager().registerEvents(new SellChestPlace(), plugin);
 		getServer().getPluginManager().registerEvents(new SellChestOpen(), plugin);
 		getServer().getPluginManager().registerEvents(new SellStickSell(), plugin);
+		getServer().getPluginManager().registerEvents(new SellChestRemove(), plugin);
 	}
 }

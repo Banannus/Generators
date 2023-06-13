@@ -3,6 +3,7 @@ package dk.banannus.generators.data.file;
 import dk.banannus.generators.Generators;
 import dk.banannus.generators.data.player.MultiplierManager;
 import dk.banannus.generators.data.player.SlotsManager;
+import dk.banannus.generators.data.player.XpManager;
 import org.bukkit.configuration.file.YamlConfiguration;
 
 import java.io.File;
@@ -13,8 +14,8 @@ public class FileManager {
 
 	private final Generators plugin;
 
-	public FileManager(Generators plugin) {
-		this.plugin = plugin;
+	public FileManager() {
+		this.plugin = Generators.getInstance();
 	}
 
 	@SuppressWarnings("ResultOfMethodCallIgnored")
@@ -33,6 +34,7 @@ public class FileManager {
 				YamlConfiguration playerYaml = YamlConfiguration.loadConfiguration(playerFile);
 				playerYaml.set("slots", Integer.valueOf(ConfigManager.get("numbers.start-gens")[0]));
 				playerYaml.set("multi", Integer.valueOf(ConfigManager.get("numbers.start-multiplier")[0]));
+				playerYaml.set("xp", 0.0);
 				playerYaml.save(playerFile);
 			} catch (IOException IO) {
 				IO.printStackTrace();
@@ -51,7 +53,7 @@ public class FileManager {
 
 	@SuppressWarnings("ResultOfMethodCallIgnored")
 	public void deleteFile(UUID uuid) {
-		FileManager fileManager = new FileManager(Generators.instance);
+		FileManager fileManager = new FileManager();
 		File file = fileManager.getPlayerFile(uuid);
 
 		if (file.exists()) {
@@ -63,6 +65,7 @@ public class FileManager {
 			YamlConfiguration playerYaml = YamlConfiguration.loadConfiguration(file);
 			playerYaml.set("slots", SlotsManager.getSlots(uuid));
 			playerYaml.set("multi", MultiplierManager.getPlayerMultiplier(uuid));
+			playerYaml.set("xp", XpManager.getXP(uuid));
 			playerYaml.save(file);
 		} catch (IOException e) {
 			e.printStackTrace();

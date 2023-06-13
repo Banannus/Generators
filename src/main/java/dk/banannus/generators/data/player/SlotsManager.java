@@ -7,17 +7,24 @@ import java.util.UUID;
 
 public class SlotsManager {
 
-	private static HashMap<UUID, Integer> slots = new HashMap<>();
 
-	public static void setSlots(UUID uuid, int amount) {
+	public static HashMap<UUID, Double> slots = new HashMap<>();
+
+	public static void setSlots(UUID uuid, double amount) {
 		slots.put(uuid, amount);
 	}
 
-	public static int getSlots(UUID uuid) {
-		return slots.getOrDefault(uuid, Integer.valueOf(ConfigManager.get("numbers.start-gens")[0]));
+	public static double getSlots(UUID uuid) {
+		return slots.getOrDefault(uuid, Double.valueOf(ConfigManager.get("numbers.start-gens")[0]));
 	}
 
-	public static void addSlots(UUID uuid, int amount) {
+
+
+	public static void addSlots(UUID uuid, double amount) {
 		setSlots(uuid, getSlots(uuid) + amount);
+	}
+
+	public static void removeSlots(UUID uuid, double amount) {
+		setSlots(uuid, getSlots(uuid) - amount);
 	}
 }

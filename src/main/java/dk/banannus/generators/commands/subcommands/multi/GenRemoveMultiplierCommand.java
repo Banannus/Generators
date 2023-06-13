@@ -1,4 +1,4 @@
-package dk.banannus.generators.commands.subcommands;
+package dk.banannus.generators.commands.subcommands.multi;
 
 import dk.banannus.generators.commands.SubCommand;
 import dk.banannus.generators.data.file.ConfigManager;
@@ -22,12 +22,12 @@ public class GenRemoveMultiplierCommand extends SubCommand {
 
 	@Override
 	public String getDescription() {
-		return "&7Fjern multiplier fra en spiller.";
+		return "&7Fjern multiplier fra en spiller";
 	}
 
 	@Override
 	public void perform(Player player, String[] args) {
-		if (args[0].equalsIgnoreCase("multiplier") && args.length == 4 && args[1].equalsIgnoreCase("remove")) {
+		if (args[0].equalsIgnoreCase("multiplier") && args.length == 4 && args[1].equalsIgnoreCase("remove") && isInt(args[3])) {
 			if (!player.hasPermission(ConfigManager.get("admin.staff-permission")[0])) {
 				ConfigManager.send(player, "admin.staff-deny-message");
 				return;
@@ -35,12 +35,12 @@ public class GenRemoveMultiplierCommand extends SubCommand {
 			Player target = Bukkit.getPlayer(args[2]);
 			if (target != null) {
 				MultiplierManager.removePlayerMultiplier(target.getUniqueId(), Double.parseDouble(args[3]));
-				ConfigManager.send(player, "messages.remove-multi-from-player", "%player%", target.getName(), "%multi%", args[3], "%totalmulti%", String.valueOf(MultiplierManager.getPlayerMultiplier(target.getUniqueId())));
+				ConfigManager.send(player, "messages.remove-multi-from-player", "%player%", target.getName(), "%slots%", args[3]);
 			} else {
 				ConfigManager.send(player, "messages.player-does-not-exist");
 			}
 		} else if (args.length < 4){
-			player.sendMessage(ConfigManager.get("messages.prefix")[0] + " " + Chat.colored("&e/gen multiplier <remove/add> <player> <antal>"));
+			player.sendMessage(ConfigManager.get("messages.prefix")[0] + " " + Chat.colored("&e/gen multiplier <remove/add/set> <player> <antal>"));
 		}
 	}
 }

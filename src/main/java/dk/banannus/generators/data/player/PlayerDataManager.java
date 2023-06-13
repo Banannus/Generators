@@ -4,6 +4,8 @@ import dk.banannus.generators.Generators;
 import dk.banannus.generators.data.file.FileManager;
 import dk.banannus.generators.data.gen.Gen;
 import dk.banannus.generators.data.gen.GensManager;
+import dk.banannus.generators.data.sellchest.SellChestItem;
+import dk.banannus.generators.data.sellchest.SellChestManager;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.configuration.ConfigurationSection;
@@ -11,6 +13,7 @@ import org.bukkit.configuration.file.YamlConfiguration;
 
 import java.io.File;
 import java.util.*;
+import java.util.concurrent.CompletableFuture;
 
 
 public class PlayerDataManager {
@@ -32,7 +35,6 @@ public class PlayerDataManager {
 	public static HashMap<UUID, Set<PlayerData>> getAllPlayerDataList() {
 		return allPlayerData;
 	}
-
 
 	public HashMap<Location, String> getAllPlayerLocations (UUID uuid) {
 		HashMap<Location, String> allLocations = new HashMap<>();
@@ -56,10 +58,12 @@ public class PlayerDataManager {
 		List<Location> allLocations = new ArrayList<>();
 
 		for (UUID uuid : allPlayerData.keySet()) {
-			Set<PlayerData> playerData = allPlayerData.get(uuid);
-			for (PlayerData data : playerData) {
-				Location location = data.getLocation();
-				allLocations.add(location);
+			if(allPlayerData.get(uuid) != null) {
+				Set<PlayerData> playerData = allPlayerData.get(uuid);
+				for (PlayerData data : playerData) {
+					Location location = data.getLocation();
+					allLocations.add(location);
+				}
 			}
 		}
 		return allLocations;
@@ -100,24 +104,40 @@ public class PlayerDataManager {
 		}
 	}
 
+	public void savePlayerData(UUID uuid) {
+		CompletableFuture.runAsync(() -> saveAll(uuid));
+	}
+
 	public void saveAll(UUID uuid) {
-		Set<PlayerData> playerDataManager = onlinePlayerData.get(uuid);
-		FileManager fileManager = new FileManager(Generators.instance);
-		if (playerDataManager == null) {
-			fileManager.deleteFile(uuid);
-			return;
-		}
+		Set<PlayerData> playerDataManagerSet = onlinePlayerData.get(uuid);
+		Set<SellChestItem> sellChestManagerSet = SellChestManager.getSellChestItems().get(uuid);
+		FileManager fileManager = new FileManager();
 		fileManager.deleteFile(uuid);
-		for (PlayerData playerData : playerDataManager) {
-			playerData.savePlayerGenData(uuid);
+		SellChestManager sellChestManager = new SellChestManager();
+		sellChestManager.saveSellChest(uuid);
+		if (playerDataManagerSet != null) {
+			PlayerData.savePlayerGenData(uuid, playerDataManagerSet);
+		}
+		if(sellChestManagerSet != null) {
+			sellChestManager.saveSellChest(uuid);
+			for (SellChestItem sellChestItem : sellChestManagerSet) {
+				sellChestItem.saveSellChestItems(uuid);
+			}
 		}
 	}
 
 	public void loadPlayerData(UUID uuid) {
-		FileManager fileManager = new FileManager(Generators.instance);
+		FileManager fileManager = new FileManager();
 		File file = fileManager.getPlayerFile(uuid);
 
 		YamlConfiguration config = YamlConfiguration.loadConfiguration(file);
+
+		double slots = config.getDouble("slots");
+		SlotsManager.setSlots(uuid, slots);
+		double multiplier = config.getDouble("multi");
+		MultiplierManager.setPlayerMultiplier(uuid, multiplier);
+		double xp = config.getDouble("xp");
+		XpManager.setXP(uuid, xp);
 
 		HashSet<PlayerData> playerDataManagerHashSet = new HashSet<>();
 		ConfigurationSection gensSection = config.getConfigurationSection("gens");

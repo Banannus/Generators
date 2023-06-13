@@ -37,7 +37,6 @@ public class Config {
 				this.configFile = new File(this.plugin.getDataFolder(), this.fileName);
 			}
 		}
-
 		this.config = YamlConfiguration.loadConfiguration(this.configFile);
 	}
 

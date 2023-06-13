@@ -27,7 +27,7 @@ public class SellChestItem {
 	}
 
 	public void saveSellChestItems(UUID uuid) {
-		FileManager fileManager = new FileManager(Generators.instance);
+		FileManager fileManager = new FileManager();
 		File file = fileManager.getPlayerFile(uuid);
 
 		YamlConfiguration config = YamlConfiguration.loadConfiguration(file);

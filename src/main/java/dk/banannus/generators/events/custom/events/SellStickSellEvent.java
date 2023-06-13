@@ -1,5 +1,6 @@
 package dk.banannus.generators.events.custom.events;
 
+import dk.banannus.generators.events.custom.events.utils.CancellableEvent;
 import org.bukkit.Location;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
@@ -8,19 +9,17 @@ import org.bukkit.event.Event;
 import org.bukkit.event.HandlerList;
 import org.bukkit.event.block.Action;
 
-public class SellStickSellEvent extends Event implements Cancellable {
+public class SellStickSellEvent extends CancellableEvent {
 
 	private static final HandlerList handlers = new HandlerList();
 	private Player player;
 	private Block clickedBlock;
 	private Action action;
-	private boolean isCancelled;
 
 	public SellStickSellEvent(Player player, Block clickedBlock, Action action) {
 		this.player = player;
 		this.clickedBlock = clickedBlock;
 		this.action = action;
-		this.isCancelled = false;
 	}
 
 	public Player getPlayer() {
@@ -44,12 +43,4 @@ public class SellStickSellEvent extends Event implements Cancellable {
 		return handlers;
 	}
 
-	@Override
-	public boolean isCancelled() {
-		return this.isCancelled;
-	}
-
-	public void setCancelled(boolean isCancelled) {
-		this.isCancelled = isCancelled;
-	}
 }

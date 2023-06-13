@@ -1,5 +1,7 @@
 package dk.banannus.generators;
 
+import ch.njol.skript.Skript;
+import ch.njol.skript.SkriptAddon;
 import dk.banannus.generators.data.file.ConfigManager;
 import dk.banannus.generators.data.file.LoadPlayerFiles;
 import dk.banannus.generators.data.gen.GensManager;
@@ -13,6 +15,7 @@ import org.bukkit.plugin.RegisteredServiceProvider;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import java.io.File;
+import java.io.IOException;
 
 public final class Generators extends JavaPlugin {
 
@@ -22,21 +25,40 @@ public final class Generators extends JavaPlugin {
     public static ConfigManager configManager;
     public static Economy econ = null;
     public static LoadPlayerFiles loadPlayerFiles;
+    SkriptAddon addon;
 
-    // TODO: Add sell-chest break
-    // TODO: Add checks til hvis man har en sell-chest/gens/items ved gemning af data (Leave)
-    // TODO: Add xp til alting
-    // TODO: Add checks til sell-chest tom
-
+    // TODO:
+    //  - Add Args[1] checks
+    //  - Add Upgrade droprate
+    //  - Upgrade menu
+    //  - Admin Commands
+    //  - Change EVERY DATA THING TO OBJECT SAVING
 
     @Override
     public void onEnable() {
 
         instance = this;
 
+        if(Bukkit.getServer().getPluginManager().getPlugin("Skript") != null){
+            addon = Skript.registerAddon(this);
+            try {
+                addon.loadClasses("dk.banannus.generators", "elements");
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        } else {
+            System.out.println("Generators - Skript failed to load");
+        }
+
+
+
         // Commands
 
         getCommand("gen").setExecutor(new GeneratorsMainCommand());
+      //  getCommand("slots").setExecutor(new GeneratorsMainCommand());
+       // getCommand("multi").setExecutor(new GeneratorsMainCommand());
+       // getCommand("upgrade").setExecutor(new GeneratorsMainCommand());
+
 
         // Listeners
 
@@ -59,8 +81,6 @@ public final class Generators extends JavaPlugin {
 
         config = new Config(this, null, "config.yml");
         configYML = config.getConfig();
-
-        // Sellchest locations
 
 
 

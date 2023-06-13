@@ -12,6 +12,7 @@ import dk.banannus.generators.utils.Chat;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
+import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 
 import java.text.DecimalFormat;
@@ -21,8 +22,14 @@ import static dk.banannus.generators.Generators.econ;
 
 public class SellStickSell implements Listener {
 
-	@EventHandler
+	@EventHandler (priority =  EventPriority.HIGHEST)
 	public void onSellStickSell(SellStickSellEvent e) {
+
+		if(e.isCancelled()) {
+			e.setCancelled(true);
+			return;
+		}
+
 		Player player = e.getPlayer();
 
 		Set<SellChestItem> sellChestItemSet = SellChestManager.getSellChestItems().get(player.getUniqueId());

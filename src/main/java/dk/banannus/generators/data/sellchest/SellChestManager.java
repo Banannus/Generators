@@ -2,8 +2,11 @@ package dk.banannus.generators.data.sellchest;
 
 import dk.banannus.generators.Generators;
 import dk.banannus.generators.data.file.FileManager;
+import dk.banannus.generators.data.gen.Gen;
+import dk.banannus.generators.data.gen.GensManager;
 import dk.banannus.generators.data.player.PlayerData;
 import dk.banannus.generators.data.player.PlayerDataManager;
+import dk.banannus.generators.data.player.XpManager;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.configuration.ConfigurationSection;
@@ -40,7 +43,8 @@ public class SellChestManager {
 	}
 
 	public static void fireSellChestItemsChangedEvent() {
-		for (BukkitRunnable listener : sellChestItemsChangeListeners) {
+		List<BukkitRunnable> listenersCopy = new ArrayList<>(sellChestItemsChangeListeners);
+		for (BukkitRunnable listener : listenersCopy) {
 			if(listener != null) {
 				listener.run();
 			}
@@ -106,7 +110,7 @@ public class SellChestManager {
 	}
 
 	public void loadSellChestItems(UUID uuid) {
-		FileManager fileManager = new FileManager(Generators.instance);
+		FileManager fileManager = new FileManager();
 		File file = fileManager.getPlayerFile(uuid);
 
 		YamlConfiguration config = YamlConfiguration.loadConfiguration(file);
@@ -132,7 +136,7 @@ public class SellChestManager {
 	}
 
 	public void saveSellChest(UUID uuid) {
-		FileManager fileManager = new FileManager(Generators.instance);
+		FileManager fileManager = new FileManager();
 		File file = fileManager.getPlayerFile(uuid);
 
 		YamlConfiguration config = YamlConfiguration.loadConfiguration(file);
@@ -158,9 +162,8 @@ public class SellChestManager {
 	}
 
 
-
 	public void loadSellChest(UUID uuid) {
-		FileManager fileManager = new FileManager(Generators.instance);
+		FileManager fileManager = new FileManager();
 		File file = fileManager.getPlayerFile(uuid);
 
 		YamlConfiguration config = YamlConfiguration.loadConfiguration(file);
@@ -180,7 +183,6 @@ public class SellChestManager {
 
 		Location location = new Location(Bukkit.getWorld(worldName), x, y, z);
 		sellChestPlayerLocation.put(uuid, location);
-		Bukkit.broadcastMessage(String.valueOf(location));
 	}
 
 	public void unLoadSellChest(UUID uuid) {

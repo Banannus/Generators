@@ -3,7 +3,11 @@ version: '${project.version}'
 main: dk.banannus.generators.Generators
 api-version: 1.19
 authors: [ Banannus ]
+depend:  [ Skript ]
 description: Generators
 commands:
   gen:
     description: Command til Generators Plugin.
+  upgrade:
+    description: Opgrader slots og andre ting.
+    aliases: opgrader
